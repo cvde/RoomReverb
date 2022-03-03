@@ -1,0 +1,20 @@
+# add source files
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        "Components/AboutDialog.cpp"
+        "Components/ABToggleComponent.cpp"
+        "Components/EarlySection.cpp"
+        "Components/HeaderSection.cpp"
+        "Components/LateSection.cpp"
+        "Components/LogoComponent.cpp"
+        "Components/OutputSection.cpp"
+        "Components/PresetComponent.cpp"
+        "Components/SliderComponent.cpp"
+        "Components/UndoComponent.cpp"
+        "LookAndFeel/CustomLookAndFeel.cpp"
+        "PluginEditor.cpp"
+        "PluginProcessor.cpp"
+        "PresetManager.cpp"
+        "ProcessorABStateManager.cpp"
+        "RoomReverb.cpp"
+)

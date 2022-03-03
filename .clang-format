@@ -1,0 +1,19 @@
+﻿---
+BasedOnStyle: LLVM
+AccessModifierOffset: '-4'
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortCaseLabelsOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: 'false'
+AllowShortLoopsOnASingleLine: 'false'
+BreakBeforeBraces: Allman
+ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
+ConstructorInitializerIndentWidth: '8'
+ContinuationIndentWidth: '4'
+IndentWidth: '4'
+PointerAlignment: Left
+ReflowComments: 'true'
+TabWidth: '4'
+ColumnLimit: '0'
+
+...

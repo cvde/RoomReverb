@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<parameters>
+  <PARAM id="dryLevel" value="90"/>
+  <PARAM id="earlyLevel" value="10"/>
+  <PARAM id="earlySendLevel" value="20"/>
+  <PARAM id="lateLevel" value="30"/>
+  <PARAM id="stereoWidth" value="100"/>
+  <PARAM id="earlyDamping" value="16000"/>
+  <PARAM id="earlyRoomSize" value="25"/>
+  <PARAM id="lateDamping" value="10000"/>
+  <PARAM id="lateDiffusion" value="80"/>
+  <PARAM id="latePredelay" value="0"/>
+  <PARAM id="lateRoomSize" value="25"/>
+  <PARAM id="lateDecay" value="12"/>
+  <PARAM id="lateSpin" value="1"/>
+  <PARAM id="lateWander" value="20"/>
+</parameters>
