@@ -48,7 +48,7 @@ private:
     AboutDialog aboutDialog;
 
     // make tooltips visible
-    juce::TooltipWindow tooltipWindow{nullptr, 300};
+    juce::TooltipWindow tooltipWindow{this, 300};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbAudioProcessorEditor)
 };

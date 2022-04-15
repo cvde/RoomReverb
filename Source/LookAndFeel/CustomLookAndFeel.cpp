@@ -40,10 +40,11 @@ namespace LookAndFeelHelpers
 }
 }
 
-CustomLookAndFeel::CustomLookAndFeel()
+CustomLookAndFeel::CustomLookAndFeel(juce::Component& tlc)
+    : topLevelComponent(tlc)
 {
     defaultFont = juce::Typeface::createSystemTypefaceFor(BinaryData::OpenSansCondensedBold_ttf, BinaryData::OpenSansCondensedBold_ttfSize);
-    LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(defaultFont.getTypefacePtr());
+    setDefaultSansSerifTypeface(defaultFont.getTypefacePtr());
 
     setColour(juce::ResizableWindow::ColourIds::backgroundColourId, juce::Colour(0xff5e5e5e));
     setColour(juce::DocumentWindow::textColourId, juce::Colours::white);
@@ -64,6 +65,12 @@ CustomLookAndFeel::CustomLookAndFeel()
 
     setColour(juce::TextEditor::focusedOutlineColourId, juce::Colour(0xffc6c6c6));
     setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff5e5e5e));
+}
+
+// draw tooltips and menus directly into the editor window (https://forum.juce.com/t/bug-popup-menu-background-and-logic-silicon/43243/10)
+juce::Component* CustomLookAndFeel::getParentComponentForMenuOptions (const juce::PopupMenu::Options&)
+{
+    return &topLevelComponent;
 }
 
 // change size of slider textbox

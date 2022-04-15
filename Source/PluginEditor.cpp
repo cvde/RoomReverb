@@ -25,11 +25,13 @@ ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(
     juce::ValueTree& appStateTree)
         : AudioProcessorEditor(&processor),
           applicationState(appStateTree),
+          customLookAndFeel(*this),
           headerSection(processor, parameterTree, aboutDialog),
           outputSection(parameterTree),
           earlySection(parameterTree),
           lateSection(parameterTree)
 {
+    juce::LookAndFeel::setDefaultLookAndFeel(&customLookAndFeel);
     setLookAndFeel(&customLookAndFeel);
     headerSection.setLookAndFeel(&customLookAndFeel);
     outputSection.setLookAndFeel(&customLookAndFeel);

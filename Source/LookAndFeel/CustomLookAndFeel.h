@@ -24,7 +24,9 @@
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-    CustomLookAndFeel();
+    explicit CustomLookAndFeel(juce::Component&);
+
+    juce::Component* getParentComponentForMenuOptions (const juce::PopupMenu::Options&) override;
 
     juce::Slider::SliderLayout getSliderLayout (juce::Slider&) override;
     void drawLinearSlider (juce::Graphics&, int x, int y, int width, int height,
@@ -59,6 +61,7 @@ public:
 
 private:
     juce::Font defaultFont;
+    juce::Component& topLevelComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomLookAndFeel)
 };
