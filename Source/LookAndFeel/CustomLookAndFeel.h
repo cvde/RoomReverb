@@ -44,6 +44,8 @@ public:
     juce::Font getPopupMenuFont() override;
     void preparePopupMenuWindow (juce::Component&) override;
     void drawPopupMenuBackground (juce::Graphics&, int width, int height) override;
+    int getPopupMenuBorderSize() override;
+    void drawPopupMenuUpDownArrow (juce::Graphics&, int width, int height, bool isScrollUpArrow) override;
     void drawPopupMenuItem (juce::Graphics&, const juce::Rectangle<int>& area,
                         bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
                         const juce::String& text, const juce::String& shortcutKeyText,

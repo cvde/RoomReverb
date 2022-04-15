@@ -288,6 +288,39 @@ void CustomLookAndFeel::drawPopupMenuBackground (juce::Graphics& g, int width, i
     g.drawRoundedRectangle (bounds.toFloat().reduced (0.5f, 0.5f), cornerSize, 1.0f);
 }
 
+// hide border of unfolded comboboxes
+int CustomLookAndFeel::getPopupMenuBorderSize()
+{
+    return 0;
+}
+
+// also the up and down arrow section needs rounded corners
+void CustomLookAndFeel::drawPopupMenuUpDownArrow (juce::Graphics& g, int width, int height, bool isScrollUpArrow)
+{
+    auto background = findColour (juce::PopupMenu::backgroundColourId);
+
+    g.setGradientFill (juce::ColourGradient (background, 0.0f, (float) height * 0.5f,
+                                       background.withAlpha (0.0f),
+                                       0.0f, isScrollUpArrow ? ((float) height) : 0.0f,
+                                       false));
+
+    auto cornerSize = 10.0f;
+    g.fillRoundedRectangle(1, 1, width - 2, height - 2, cornerSize);
+
+    auto hw = (float) width * 0.5f;
+    auto arrowW = (float) height * 0.3f;
+    auto y1 = (float) height * (isScrollUpArrow ? 0.6f : 0.3f);
+    auto y2 = (float) height * (isScrollUpArrow ? 0.3f : 0.6f);
+
+    juce::Path p;
+    p.addTriangle (hw - arrowW, y1,
+                   hw + arrowW, y1,
+                   hw, y2);
+
+    g.setColour (findColour (juce::PopupMenu::textColourId).withAlpha (0.5f));
+    g.fillPath (p);
+}
+
 // change highlighting of elements in unfolded comboboxes
 void CustomLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
                                         const bool isSeparator, const bool isActive,
