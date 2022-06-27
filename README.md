@@ -12,12 +12,17 @@ The latest release of Room Reverb can be downloaded on my [website](https://www.
 ## Building Room Reverb
 
 Room Reverb uses the JUCE C++ framework. If you are on Linux, you need to install [these dependencies](https://github.com/juce-framework/JUCE/blob/master/docs/Linux%20Dependencies.md) first.
-```
+```bash
+# Get the repository including submodules
 git clone --recurse-submodules https://github.com/cvde/RoomReverb.git
 cd RoomReverb
+
+# Build plugin with CMake
 cmake -DCMAKE_BUILD_TYPE=Release -B build
 cmake --build build
 ```
+After a successful build, the plugin binaries can be found in `build/RoomReverb_artefacts`.
+
 ## References
 - [Freeverb3 signal processing library](https://www.nongnu.org/freeverb3/)
 - [Freeverb3 algorithm references](https://freeverb3vst.osdn.jp/ref.shtml)
