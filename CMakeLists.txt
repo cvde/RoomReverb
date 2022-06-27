@@ -20,6 +20,9 @@ endif ()
 # include JUCE
 add_subdirectory(JUCE)
 
+# include clap extension to build plugin in clap format
+add_subdirectory(clap-juce-extensions EXCLUDE_FROM_ALL)
+
 juce_add_plugin(${PROJECT_NAME}
     PLUGIN_NAME "Room Reverb"
     PLUGIN_CODE "Errp"
@@ -38,6 +41,13 @@ juce_add_plugin(${PROJECT_NAME}
     AU_MAIN_TYPE "kAudioUnitType_Effect"
     COPY_PLUGIN_AFTER_BUILD TRUE
     EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+)
+
+# configure clap plugin
+clap_juce_extensions_plugin(
+    TARGET ${PROJECT_NAME}
+    CLAP_ID "com.elephantdsp.roomreverb"
+    CLAP_FEATURES audio-effect reverb
 )
 
 # create Config.h file
