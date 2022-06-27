@@ -18,10 +18,10 @@ if(UNIX AND NOT APPLE)
 endif ()
 
 # include JUCE
-add_subdirectory(JUCE)
+add_subdirectory(Libs/JUCE)
 
 # include clap extension to build plugin in clap format
-add_subdirectory(clap-juce-extensions EXCLUDE_FROM_ALL)
+add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
 
 juce_add_plugin(${PROJECT_NAME}
     PLUGIN_NAME "Room Reverb"
@@ -63,15 +63,15 @@ add_subdirectory(Assets)
 # include Source folder
 add_subdirectory(Source)
 
-# include Freeverb3 folder and add as include folders
-add_subdirectory(Freeverb3)
+# include Freeverb3 folder and add as include folder
+add_subdirectory(Libs/Freeverb3)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        "Freeverb3/"
-        "Freeverb3/fftw/"
+        "Libs/Freeverb3/"
+        "Libs/Freeverb3/fftw/"
 )
 
-# adds some preprocessor definitions
+# adds some preprocessor definitions for JUCE and freeverb
 target_compile_definitions(${PROJECT_NAME}
     PUBLIC
         JUCE_DISPLAY_SPLASH_SCREEN=0

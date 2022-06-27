@@ -1,6 +1,6 @@
 [submodule "JUCE"]
-	path = JUCE
+	path = Libs/JUCE
 	url = https://github.com/juce-framework/JUCE.git
 [submodule "clap-juce-extensions"]
-	path = clap-juce-extensions
+	path = Libs/clap-juce-extensions
 	url = https://github.com/free-audio/clap-juce-extensions.git
