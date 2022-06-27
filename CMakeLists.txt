@@ -5,9 +5,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_OSX_ARCHITECTURES arm64 x86_64)
 
 set(PROJECT_NAME "RoomReverb")
-set(PROJECT_VERSION "0.5.1")
+set(PROJECT_VERSION "0.6.0")
 
 project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
+
+# set plugin formats to build
+set(PLUGIN_FORMATS VST3 AU) # Standalone Unity VST3 AU AUv3 AAX VST LV2
+
+# build LV2 only on Linux - Is LV2 a thing on other platforms?
+if(UNIX AND NOT APPLE)
+    list(APPEND PLUGIN_FORMATS LV2)
+endif ()
 
 # include JUCE
 add_subdirectory(JUCE)
@@ -24,7 +32,7 @@ juce_add_plugin(${PROJECT_NAME}
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
     IS_MIDI_EFFECT FALSE
-    FORMATS VST3 AU # Standalone Unity VST3 AU AUv3 AAX VST
+    FORMATS ${PLUGIN_FORMATS}
     VST3_CATEGORIES "Fx" "Reverb"
     AAX_CATEGORY "AAX_ePlugInCategory_Reverb"
     AU_MAIN_TYPE "kAudioUnitType_Effect"
