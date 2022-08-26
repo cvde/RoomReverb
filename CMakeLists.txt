@@ -61,7 +61,6 @@ add_subdirectory(Libs/Freeverb3)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         "Libs/Freeverb3/"
-        "Libs/Freeverb3/fftw/"
 )
 
 # adds some preprocessor definitions for JUCE and freeverb
