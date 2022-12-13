@@ -21,7 +21,7 @@ cd RoomReverb
 cmake -DCMAKE_BUILD_TYPE=Release -B build
 cmake --build build
 ```
-RoomReverb requires CMake version 3.15 or higher, however, RoomReverb CLAP builds require CMake 3.21 or higher. CLAP builds can be disabled by adding -DBUILD_CLAP=OFF to the first CMake command.
+RoomReverb requires CMake version 3.15 or higher, however, RoomReverb CLAP builds require CMake 3.21 or higher. CLAP builds can be disabled by adding `-DBUILD_CLAP=OFF` to the first CMake command.
 
 After a successful build, the plugin binaries can be found in `build/RoomReverb_artefacts`.
 
