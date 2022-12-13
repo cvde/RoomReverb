@@ -14,7 +14,15 @@ project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 add_subdirectory(Libs/JUCE)
 
 # include clap extension to build plugin in clap format
-add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
+if (NOT IOS)
+    option(BUILD_CLAP "Create a CLAP target for RoomReverb" ON)
+else()
+    option(BUILD_CLAP "Create a CLAP target for RoomReverb" OFF)
+endif()
+
+if(BUILD_CLAP)
+    add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
+endif()
 
 juce_add_plugin(${PROJECT_NAME}
     PLUGIN_NAME "Room Reverb"
@@ -37,11 +45,13 @@ juce_add_plugin(${PROJECT_NAME}
 )
 
 # configure clap plugin
-clap_juce_extensions_plugin(
-    TARGET ${PROJECT_NAME}
-    CLAP_ID "com.elephantdsp.roomreverb"
-    CLAP_FEATURES audio-effect reverb
-)
+if(BUILD_CLAP)
+    clap_juce_extensions_plugin(
+        TARGET ${PROJECT_NAME}
+        CLAP_ID "com.elephantdsp.roomreverb"
+        CLAP_FEATURES audio-effect reverb
+    )
+endif()
 
 # create Config.h file
 configure_file(Config.h.in Config.h)
