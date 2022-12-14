@@ -13,9 +13,6 @@ project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 # include JUCE
 add_subdirectory(Libs/JUCE)
 
-# include clap extension to build plugin in clap format
-add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
-
 juce_add_plugin(${PROJECT_NAME}
     PLUGIN_NAME "Room Reverb"
     PLUGIN_CODE "Errp"
@@ -36,12 +33,20 @@ juce_add_plugin(${PROJECT_NAME}
     EDITOR_WANTS_KEYBOARD_FOCUS FALSE
 )
 
-# configure clap plugin
-clap_juce_extensions_plugin(
-    TARGET ${PROJECT_NAME}
-    CLAP_ID "com.elephantdsp.roomreverb"
-    CLAP_FEATURES audio-effect reverb
-)
+# clap-juce-extensions requires CMake 3.21
+if(CMAKE_VERSION VERSION_LESS 3.21.0)
+    message(WARNING "Skipped CLAP build. Building CLAP requires CMake 3.21.")
+else()
+    # include clap extension to build plugin in clap format
+    add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
+
+    # configure clap plugin
+    clap_juce_extensions_plugin(
+        TARGET ${PROJECT_NAME}
+        CLAP_ID "com.elephantdsp.roomreverb"
+        CLAP_FEATURES audio-effect reverb
+    )
+endif()
 
 # create Config.h file
 configure_file(Config.h.in Config.h)
