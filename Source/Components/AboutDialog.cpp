@@ -29,7 +29,7 @@ AboutDialog::AboutDialog()
 
     logo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
 
-    const juce::String pluginInfoText = juce::String("ElephantDSP.com Room Reverb is a free and open source mono/stereo to stereo reverb audio plugin based on Freeverb3. For more information and contact options, visit www.ElephantDSP.com\n\n") +
+    const juce::String pluginInfoText = juce::String("ElephantDSP.com Room Reverb is free software distributed under the GNU General Public License version 3. For more information, contact options, and the source code, visit www.ElephantDSP.com\n\n") +
                                         "Version: " + juce::String(PROJECT_VERSION) + "\n" +
                                         "Format: " + juce::String(juce::AudioProcessor::getWrapperTypeDescription(pluginHostType.getPluginLoadedAs())) + "\n" +
                                         "Host: " + juce::String(pluginHostType.getHostDescription()) + "\n" +
