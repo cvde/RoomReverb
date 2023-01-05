@@ -19,13 +19,14 @@
 
 #pragma once
 
+#include "../PluginProcessor.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 class UndoComponent : public juce::Component, private juce::ChangeListener
 {
 public:
-    UndoComponent(juce::AudioProcessorValueTreeState& parameterTree);
+    UndoComponent(ReverbAudioProcessor& processor);
     ~UndoComponent() override;
 
     void paint(juce::Graphics& g) override;

@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "../PluginProcessor.h"
 #include "SliderComponent.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -26,7 +27,7 @@
 class LateSection : public juce::Component
 {
 public:
-    LateSection(juce::AudioProcessorValueTreeState& parameterTree);
+    LateSection(ReverbAudioProcessor& processor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

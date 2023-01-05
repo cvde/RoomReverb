@@ -20,16 +20,16 @@
 #include "OutputSection.h"
 #include <BinaryData.h>
 
-OutputSection::OutputSection(juce::AudioProcessorValueTreeState& parameterTree)
-        : dryLevel(parameterTree, "dryLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
+OutputSection::OutputSection(ReverbAudioProcessor& processor)
+        : dryLevel(processor, "dryLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
                    "Dry Level is the proportion of the clean, unprocessed input signal sent to the output. Higher values give the impression of being closer to the sound source."),
-          earlyLevel(parameterTree, "earlyLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
+          earlyLevel(processor, "earlyLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
                      "Early Reflections Level is the proportion of early reflections sent to the output. Higher values give the impression of a smaller room."),
-          earlySendLevel(parameterTree, "earlySendLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
+          earlySendLevel(processor, "earlySendLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
                          "Early Reflections Send Level is the proportion of early reflections sent to the late reverberation. Higher values produce more dispersion and a smoother sound in the late reverberation."),
-          lateLevel(parameterTree, "lateLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
+          lateLevel(processor, "lateLevel", BinaryData::parameter_level_svg, BinaryData::parameter_level_svgSize,
                     "Late Reverb Level is the proportion of late reverberation sent to the output. Higher values give the impression of a larger room."),
-          stereoWidth(parameterTree, "stereoWidth", BinaryData::parameter_stereo_svg, BinaryData::parameter_stereo_svgSize,
+          stereoWidth(processor, "stereoWidth", BinaryData::parameter_stereo_svg, BinaryData::parameter_stereo_svgSize,
                       "Stereo Width determines the perceived width of the early reflections and late reverberation stereo field. Higher values produce a wider stereo field.")
 {
     sectionTitle.setText("Output", juce::dontSendNotification);

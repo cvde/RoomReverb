@@ -31,7 +31,7 @@
 class ReverbAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-    ReverbAudioProcessorEditor(ReverbAudioProcessor& processor, juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree);
+    ReverbAudioProcessorEditor(ReverbAudioProcessor& processor);
     ~ReverbAudioProcessorEditor() override;
 
     //==============================================================================

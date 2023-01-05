@@ -70,6 +70,8 @@ public:
                           float newValue) override;
 
     //==============================================================================
+    juce::ValueTree& getApplicationState();
+    juce::AudioProcessorValueTreeState& getParameters();
     PresetManager& getPresetManager();
     ProcessorABStateManager& getProcessorABStateManager();
 

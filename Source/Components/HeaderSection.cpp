@@ -22,10 +22,9 @@
 
 HeaderSection::HeaderSection(
     ReverbAudioProcessor& processor,
-    juce::AudioProcessorValueTreeState& parameterTree,
     AboutDialog& aboutDialogComponent)
-        : undo(parameterTree),
-          preset(processor, parameterTree),
+        : undo(processor),
+          preset(processor),
           abToggle(processor),
           aboutDialog(aboutDialogComponent)
 {

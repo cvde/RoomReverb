@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "../PluginProcessor.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -26,7 +27,7 @@ class SliderComponent : public juce::Component
 {
 public:
     SliderComponent(
-        juce::AudioProcessorValueTreeState& parameterTree,
+        ReverbAudioProcessor& processor,
         const juce::String& parameterID,
         const char* binaryIcon,
         const int binaryIconSize,
@@ -36,6 +37,7 @@ public:
     void resized() override;
 
 private:
+    juce::AudioProcessorValueTreeState& parameters;
     std::unique_ptr<juce::Drawable> parameterIcon;
     juce::Label parameterLabel;
     juce::DrawableButton parameterInfoButton{"parameterInfoButton", juce::DrawableButton::ImageFitted};

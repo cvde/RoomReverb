@@ -19,17 +19,14 @@
 
 #include "PluginEditor.h"
 
-ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(
-    ReverbAudioProcessor& processor,
-    juce::AudioProcessorValueTreeState& parameterTree,
-    juce::ValueTree& appStateTree)
+ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& processor)
         : AudioProcessorEditor(&processor),
-          applicationState(appStateTree),
+          applicationState(processor.getApplicationState()),
           customLookAndFeel(*this),
-          headerSection(processor, parameterTree, aboutDialog),
-          outputSection(parameterTree),
-          earlySection(parameterTree),
-          lateSection(parameterTree)
+          headerSection(processor, aboutDialog),
+          outputSection(processor),
+          earlySection(processor),
+          lateSection(processor)
 {
     juce::LookAndFeel::setDefaultLookAndFeel(&customLookAndFeel);
     setLookAndFeel(&customLookAndFeel);

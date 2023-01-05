@@ -19,10 +19,8 @@
 
 #include "PresetComponent.h"
 
-PresetComponent::PresetComponent(
-    ReverbAudioProcessor& processor,
-    juce::AudioProcessorValueTreeState& parameterTree)
-        : parameters(parameterTree),
+PresetComponent::PresetComponent(ReverbAudioProcessor& processor)
+        : parameters(processor.getParameters()),
           presetManager(processor.getPresetManager())
 {
     // add all presets to the combobox

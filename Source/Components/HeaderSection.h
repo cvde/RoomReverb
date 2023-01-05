@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "../PluginProcessor.h"
 #include "ABToggleComponent.h"
 #include "AboutDialog.h"
 #include "LogoComponent.h"
@@ -30,7 +31,7 @@
 class HeaderSection : public juce::Component
 {
 public:
-    HeaderSection(ReverbAudioProcessor& processor, juce::AudioProcessorValueTreeState& parameterTree, AboutDialog& aboutDialogComponent);
+    HeaderSection(ReverbAudioProcessor& processor, AboutDialog& aboutDialogComponent);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

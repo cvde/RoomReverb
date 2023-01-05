@@ -27,7 +27,7 @@
 class PresetComponent : public juce::Component, public juce::ValueTree::Listener
 {
 public:
-    PresetComponent(ReverbAudioProcessor& processor, juce::AudioProcessorValueTreeState& parameterTree);
+    PresetComponent(ReverbAudioProcessor& processor);
     ~PresetComponent() override;
 
     void paint(juce::Graphics& g) override;

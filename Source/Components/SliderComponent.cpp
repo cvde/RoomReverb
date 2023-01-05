@@ -21,18 +21,19 @@
 #include <BinaryData.h>
 
 SliderComponent::SliderComponent(
-    juce::AudioProcessorValueTreeState& parameterTree,
+    ReverbAudioProcessor& processor,
     const juce::String& parameterID,
     const char* binaryIcon,
     const int binaryIconSize,
     const juce::String& parameterInfoText)
-        : parameterSliderAttachment(parameterTree, parameterID, parameterSlider)
+        : parameters(processor.getParameters()),
+          parameterSliderAttachment(processor.getParameters(), parameterID, parameterSlider)
 {
-    parameterSlider.setTextValueSuffix(parameterTree.getParameter(parameterID)->getLabel());
+    parameterSlider.setTextValueSuffix(parameters.getParameter(parameterID)->getLabel());
     parameterSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 62, 22);
     addAndMakeVisible(parameterSlider);
 
-    parameterLabel.setText(parameterTree.getParameter(parameterID)->getName(40), juce::dontSendNotification);
+    parameterLabel.setText(parameters.getParameter(parameterID)->getName(40), juce::dontSendNotification);
     parameterLabel.setFont(juce::Font(20.0f));
     addAndMakeVisible(parameterLabel);
 

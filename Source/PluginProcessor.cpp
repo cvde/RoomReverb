@@ -212,7 +212,7 @@ bool ReverbAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* ReverbAudioProcessor::createEditor()
 {
-    return new ReverbAudioProcessorEditor(*this, parameters, applicationState);
+    return new ReverbAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -367,6 +367,16 @@ void ReverbAudioProcessor::parameterChanged(const juce::String& parameter, float
     {
         jassertfalse; // unknown parameter ...
     }
+}
+
+juce::ValueTree& ReverbAudioProcessor::getApplicationState()
+{
+    return applicationState;
+}
+
+juce::AudioProcessorValueTreeState& ReverbAudioProcessor::getParameters()
+{
+    return parameters;
 }
 
 PresetManager& ReverbAudioProcessor::getPresetManager()
