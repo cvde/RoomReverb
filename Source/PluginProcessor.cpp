@@ -285,20 +285,20 @@ ReverbAudioProcessor::createParameterLayout()
     juce::AudioProcessorValueTreeState::ParameterLayout params;
     using Range = juce::NormalisableRange<float>;
 
-    params.add(std::make_unique<juce::AudioParameterFloat>("dryLevel", "Dry Level", Range{0.0f, 100.0f, 1.0f}, 80.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("earlyLevel", "Early Reflections Level", Range{0.0f, 100.0f, 1.0f}, 10.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("earlySendLevel", "Early Reflections Send Level", Range{0.0f, 100.0f, 1.0f}, 20.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateLevel", "Late Reverb Level", Range{0.0f, 100.0f, 1.0f}, 20.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("stereoWidth", "Stereo Width", Range{0.0f, 100.0f, 1.0f}, 100.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("earlyDamping", "Damping", Range{100.0f, 16000.0f, 1.0f}, 16000.0f, " Hz"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("earlyRoomSize", "Room Size", Range{0.0f, 100.0f, 1.0f}, 25.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateDamping", "Damping", Range{100.0f, 16000.0f, 1.0f}, 14000.0f, " Hz"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateDiffusion", "Diffusion", Range{0.0f, 100.0f, 1.0f}, 50.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("latePredelay", "Predelay", Range{0.0f, 200.0f, 0.1f}, 8.0f, " ms"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateRoomSize", "Room Size", Range{0.0f, 100.0f, 1.0f}, 25.0f, " %"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateDecay", "Decay", Range{0.1f, 30.0f, 0.01f}, 0.4f, " s"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateSpin", "Spin", Range{0.0f, 5.0f, 0.1f}, 0.4f, " Hz"));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lateWander", "Wander", Range{0.0f, 100.0f, 1.0f}, 30.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("dryLevel", 1), "Dry Level", Range{0.0f, 100.0f, 1.0f}, 80.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("earlyLevel", 1), "Early Reflections Level", Range{0.0f, 100.0f, 1.0f}, 10.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("earlySendLevel", 1), "Early Reflections Send Level", Range{0.0f, 100.0f, 1.0f}, 20.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateLevel", 1), "Late Reverb Level", Range{0.0f, 100.0f, 1.0f}, 20.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("stereoWidth", 1), "Stereo Width", Range{0.0f, 100.0f, 1.0f}, 100.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("earlyDamping", 1), "Damping", Range{100.0f, 16000.0f, 1.0f}, 16000.0f, " Hz"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("earlyRoomSize", 1), "Room Size", Range{0.0f, 100.0f, 1.0f}, 25.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateDamping", 1), "Damping", Range{100.0f, 16000.0f, 1.0f}, 14000.0f, " Hz"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateDiffusion", 1), "Diffusion", Range{0.0f, 100.0f, 1.0f}, 50.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("latePredelay", 1), "Predelay", Range{0.0f, 200.0f, 0.1f}, 8.0f, " ms"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateRoomSize", 1), "Room Size", Range{0.0f, 100.0f, 1.0f}, 25.0f, " %"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateDecay", 1), "Decay", Range{0.1f, 30.0f, 0.01f}, 0.4f, " s"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateSpin", 1), "Spin", Range{0.0f, 5.0f, 0.1f}, 0.4f, " Hz"));
+    params.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lateWander", 1), "Wander", Range{0.0f, 100.0f, 1.0f}, 30.0f, " %"));
 
     return params;
 }
