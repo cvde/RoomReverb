@@ -35,7 +35,7 @@ HeaderSection::HeaderSection(
 
     aboutButton.setButtonText("?");
     aboutButton.setTooltip("About this plugin.");
-    aboutButton.onClick = [this] { this->aboutDialog.setVisible(true); };
+    aboutButton.onClick = [this] { aboutDialog.setVisible(true); };
     addAndMakeVisible(aboutButton);
 }
 

@@ -50,7 +50,7 @@ ABToggleComponent::ABToggleComponent(ReverbAudioProcessor& processor)
 
     copyButton.setButtonText("Copy");
     copyButton.setTooltip("Copy plugin setting A to plugin setting B or vice versa (depending on which setting is currently active).");
-    copyButton.onClick = [this] { this->processorABStateManager.copyActiveToInactiveProcessorState(); };
+    copyButton.onClick = [this] { processorABStateManager.copyActiveToInactiveProcessorState(); };
     addAndMakeVisible(copyButton);
 }
 

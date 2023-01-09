@@ -24,7 +24,7 @@
 AboutDialog::AboutDialog()
 {
     closeButton.setShape(getLookAndFeel().getCrossShape(1.0f), false, true, false);
-    closeButton.onClick = [this] { this->setVisible(false); };
+    closeButton.onClick = [this] { setVisible(false); };
     addAndMakeVisible(closeButton);
 
     logo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
