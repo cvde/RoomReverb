@@ -20,8 +20,9 @@
 #include "PresetManager.h"
 #include <BinaryData.h>
 
-PresetManager::PresetManager(juce::AudioProcessorValueTreeState& parameterTree)
-        : parameters(parameterTree)
+PresetManager::PresetManager(juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree)
+        : parameters(parameterTree),
+          applicationState(appStateTree)
 {
     presets = {
         {"Default (Medium Room)", juce::ValueTree::fromXml(BinaryData::MediumRoom_xml)},
@@ -78,7 +79,19 @@ void PresetManager::setCurrentPreset(int presetIndex)
 {
     if (presetIndex >= 0 && presetIndex <= (int)presets.size())
     {
-        parameters.replaceState(presets.at((size_t)presetIndex).presetXml.createCopy());
+        auto newParameters = presets.at((size_t)presetIndex).presetXml.createCopy();
+
+        // keep values of locked parameters
+        for (int i = 0; i < newParameters.getNumChildren(); ++i)
+        {
+            const auto& parameterName = newParameters.getChild(i).getProperty("id").toString();
+            if (isParameterLocked(parameterName))
+            {
+                newParameters.getChild(i).setProperty("value", parameters.getParameterAsValue(parameterName), nullptr);
+            }
+        }
+
+        parameters.replaceState(newParameters);
         parameters.state.getOrCreateChildWithName("preset", nullptr).setProperty("selected", presetIndex, nullptr);
         parameters.undoManager->clearUndoHistory();
     }
@@ -101,4 +114,19 @@ juce::String PresetManager::getPresetName(int presetIndex) const
     }
     jassertfalse; // there is no such preset ...
     return {};
+}
+
+bool PresetManager::isParameterLocked(const juce::String& parameterID)
+{
+    return (bool)applicationState.getChildWithName("activeParameterLocks").getProperty(parameterID, false);
+}
+
+void PresetManager::lockParameter(const juce::String& parameterID)
+{
+    applicationState.getOrCreateChildWithName("activeParameterLocks", nullptr).setProperty(parameterID, true, nullptr);
+}
+
+void PresetManager::unlockParameter(const juce::String& parameterID)
+{
+    applicationState.getOrCreateChildWithName("activeParameterLocks", nullptr).setProperty(parameterID, false, nullptr);
 }

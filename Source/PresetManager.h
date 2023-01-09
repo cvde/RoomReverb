@@ -31,7 +31,7 @@ struct Preset
 class PresetManager
 {
 public:
-    PresetManager(juce::AudioProcessorValueTreeState& parameterTree);
+    PresetManager(juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree);
 
     int getNumPresets() const;
     int getCurrentPreset() const;
@@ -39,8 +39,13 @@ public:
     void setDefaultPreset();
     juce::String getPresetName(int presetIndex) const;
 
+    bool isParameterLocked(const juce::String& parameterID);
+    void lockParameter(const juce::String& parameterID);
+    void unlockParameter(const juce::String& parameterID);
+
 private:
     juce::AudioProcessorValueTreeState& parameters;
+    juce::ValueTree& applicationState;
     std::vector<Preset> presets;
 
     static constexpr int defaultPreset = 0;

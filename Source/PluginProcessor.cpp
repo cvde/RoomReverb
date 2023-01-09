@@ -34,7 +34,7 @@ ReverbAudioProcessor::ReverbAudioProcessor()
                   ),
 #endif
           parameters(*this, &undo, "parameters", createParameterLayout()),
-          presetManager(parameters),
+          presetManager(parameters, applicationState),
           processorABStateManager(parameters, applicationState)
 {
     // add a listener for each parameter

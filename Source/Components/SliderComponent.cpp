@@ -27,11 +27,11 @@ SliderComponent::SliderComponent(
     const int binaryIconSize,
     const juce::String& parameterInfoText)
         : parameters(processor.getParameters()),
-          parameterSliderAttachment(processor.getParameters(), parameterID, parameterSlider)
+          parameterSliderAttachment(processor.getParameters(), parameterID, parameterSlider),
+          presetManager(processor.getPresetManager())
 {
-    parameterSlider.setTextValueSuffix(parameters.getParameter(parameterID)->getLabel());
-    parameterSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 62, 22);
-    addAndMakeVisible(parameterSlider);
+    parameterIcon = juce::Drawable::createFromImageData(binaryIcon, binaryIconSize);
+    addAndMakeVisible(parameterIcon.get());
 
     parameterLabel.setText(parameters.getParameter(parameterID)->getName(40), juce::dontSendNotification);
     parameterLabel.setFont(juce::Font(20.0f));
@@ -41,8 +41,18 @@ SliderComponent::SliderComponent(
     parameterInfoButton.setTooltip(parameterInfoText);
     addAndMakeVisible(parameterInfoButton);
 
-    parameterIcon = juce::Drawable::createFromImageData(binaryIcon, binaryIconSize);
-    addAndMakeVisible(parameterIcon.get());
+    parameterSlider.setTextValueSuffix(parameters.getParameter(parameterID)->getLabel());
+    parameterSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 62, 22);
+    addAndMakeVisible(parameterSlider);
+
+    parameterLockButton.setImages(juce::Drawable::createFromImageData(BinaryData::lock_open_svg, BinaryData::lock_open_svgSize).get(), nullptr, nullptr, nullptr, juce::Drawable::createFromImageData(BinaryData::lock_closed_svg, BinaryData::lock_closed_svgSize).get(), nullptr, nullptr, nullptr);
+    parameterLockButton.setTooltip("Lock this parameter to keep it when selecting another preset.");
+    parameterLockButton.setClickingTogglesState(true);
+    parameterLockButton.setToggleState(presetManager.isParameterLocked(parameterID), juce::dontSendNotification);
+    parameterLockButton.setColour(juce::DrawableButton::ColourIds::backgroundOnColourId, juce::Colours::transparentBlack);
+    parameterLockButton.onClick = [this, parameterID] { parameterLockButton.getToggleState() ? presetManager.lockParameter(parameterID) : presetManager.unlockParameter(parameterID); };
+
+    addAndMakeVisible(parameterLockButton);
 }
 
 void SliderComponent::paint(juce::Graphics& g)
@@ -54,7 +64,7 @@ void SliderComponent::resized()
 {
     auto area = getLocalBounds();
 
-    auto parameterIconArea = area.removeFromLeft(area.getHeight() * 0.5f);
+    auto parameterIconArea = area.removeFromLeft(area.getHeight() / 2);
     parameterIcon->setTransformToFit(parameterIconArea.toFloat().reduced(5), juce::RectanglePlacement::centred);
     parameterIcon->setBounds(parameterIconArea);
 
@@ -65,6 +75,8 @@ void SliderComponent::resized()
     // placing the info button
     parameterInfoButton.setBounds(labelAndInfo.getX(), labelAndInfo.getCentreY() - 12, 24, 24);
 
-    area.removeFromRight(5);
+    auto parameterLockButtonSize = area.removeFromRight(30).reduced(3);
+    parameterLockButton.setBounds(parameterLockButtonSize.getX(), parameterLockButtonSize.getCentreY() - 12, 24, 24);
+
     parameterSlider.setBounds(area);
 }

@@ -5,6 +5,8 @@ juce_add_binary_data(BinaryData
         "VST_Compatible_Logo_Steinberg_with_TM_negative.svg"
         "Fonts/OpenSansCondensed-Bold.ttf"
         "Icons/info.svg"
+        "Icons/lock_closed.svg"
+        "Icons/lock_open.svg"
         "Icons/parameter_damping.svg"
         "Icons/parameter_decay.svg"
         "Icons/parameter_diffusion.svg"
