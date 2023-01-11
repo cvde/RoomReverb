@@ -1,7 +1,7 @@
 /**
  *  ElephantDSP.com Room Reverb
  *
- *  Copyright (C) 2021 Christian Voigt
+ *  Copyright (C) 2023 Christian Voigt
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,30 +19,29 @@
 
 #pragma once
 
-#include "Components/Main.h"
-#include "LookAndFeel/CustomLookAndFeel.h"
-#include "PluginProcessor.h"
-#include <juce_audio_processors/juce_audio_processors.h>
+#include "AboutDialog.h"
+#include "EarlySection.h"
+#include "HeaderSection.h"
+#include "LateSection.h"
+#include "OutputSection.h"
 
-class ReverbAudioProcessorEditor : public juce::AudioProcessorEditor
+class Main : public juce::Component
 {
 public:
-    ReverbAudioProcessorEditor(ReverbAudioProcessor& processor);
-    ~ReverbAudioProcessorEditor() override;
+    Main(ReverbAudioProcessor& processor);
 
-    //==============================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
-    CustomLookAndFeel customLookAndFeel;
-    juce::ValueTree& applicationState;
-    Main main;
+    HeaderSection headerSection;
+    OutputSection outputSection;
+    EarlySection earlySection;
+    LateSection lateSection;
+    AboutDialog aboutDialog;
 
-    const int idealWidth = 1024;
-    const int idealHeight = 768;
-    const int minWidth = 800;
-    const int minHeight = 600;
+    // make tooltips visible
+    juce::TooltipWindow tooltipWindow{this, 300};
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Main)
 };

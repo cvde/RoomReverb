@@ -22,46 +22,33 @@
 ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& processor)
         : AudioProcessorEditor(&processor),
           applicationState(processor.getApplicationState()),
-          headerSection(processor, aboutDialog),
-          outputSection(processor),
-          earlySection(processor),
-          lateSection(processor)
+          main(processor)
 {
     juce::LookAndFeel::setDefaultLookAndFeel(&customLookAndFeel);
     setLookAndFeel(&customLookAndFeel);
-    headerSection.setLookAndFeel(&customLookAndFeel);
-    outputSection.setLookAndFeel(&customLookAndFeel);
-    earlySection.setLookAndFeel(&customLookAndFeel);
-    lateSection.setLookAndFeel(&customLookAndFeel);
-    aboutDialog.setLookAndFeel(&customLookAndFeel);
-    tooltipWindow.setLookAndFeel(&customLookAndFeel);
-    tooltipWindow.setOpaque(false);
+    main.setLookAndFeel(&customLookAndFeel);
 
-    addAndMakeVisible(headerSection);
-    addAndMakeVisible(outputSection);
-    addAndMakeVisible(earlySection);
-    addAndMakeVisible(lateSection);
-    addChildComponent(aboutDialog); // initially not visible
+    addAndMakeVisible(main);
 
     // set default or stored previous GUI size
     const auto& storedGuiWidth = applicationState.getChildWithName("editor").getProperty("width");
     const auto& storedGuiHeight = applicationState.getChildWithName("editor").getProperty("height");
     if (storedGuiWidth.isVoid() || storedGuiHeight.isVoid())
     {
-        setSize(1024, 768);
+        setSize(idealWidth, idealHeight);
     }
     else
     {
         setSize(storedGuiWidth, storedGuiHeight);
     }
     setResizable(true, true);
-    setResizeLimits(800, 600, 4096, 4096);
 }
 
 ReverbAudioProcessorEditor::~ReverbAudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
-    tooltipWindow.setLookAndFeel(nullptr);
+    main.setLookAndFeel(nullptr);
+
     // store last GUI size
     applicationState.getOrCreateChildWithName("editor", nullptr).setProperty("width", getWidth(), nullptr);
     applicationState.getOrCreateChildWithName("editor", nullptr).setProperty("height", getHeight(), nullptr);
@@ -75,19 +62,21 @@ void ReverbAudioProcessorEditor::paint(juce::Graphics& g)
 
 void ReverbAudioProcessorEditor::resized()
 {
-    auto area = getLocalBounds().reduced(2);
+    const int currentWidth = getWidth();
+    const int currentHeight = getHeight();
 
-    const int aboutDialogHeight = area.getHeight() * 0.75f;
-    const int aboutDialogWidth = area.getWidth() * 0.5f;
-    aboutDialog.setBounds(area.getCentreX() - aboutDialogWidth / 2, area.getCentreY() - aboutDialogHeight / 2, aboutDialogWidth, aboutDialogHeight);
-
-    const int headerSectionHeight = juce::jlimit(50, 60, (area.getHeight() / 15));
-    headerSection.setBounds(area.removeFromTop(headerSectionHeight));
-
-    const int mainContentHeight = area.getHeight();
-    auto leftColumn = area.removeFromLeft(area.getWidth() / 2);
-    outputSection.setBounds(leftColumn.removeFromTop(mainContentHeight * 2 / 3));
-    earlySection.setBounds(leftColumn);
-
-    lateSection.setBounds(area);
+    // scale GUI down if the available space is below the minimum size
+    if (currentWidth < minWidth || currentHeight < minHeight)
+    {
+        const float scaleX = (float)currentWidth / (float)minWidth;
+        const float scaleY = (float)currentHeight / (float)minHeight;
+        const float scale = juce::jmin(scaleX, scaleY);
+        main.setTransform(juce::AffineTransform::scale(scale));
+        main.centreWithSize(minWidth, minHeight);
+    }
+    else
+    {
+        main.setTransform(juce::AffineTransform::scale(1));
+        main.setBounds(getLocalBounds());
+    }
 }

@@ -7,6 +7,7 @@ target_sources(${PROJECT_NAME}
         "Components/HeaderSection.cpp"
         "Components/LateSection.cpp"
         "Components/LogoComponent.cpp"
+        "Components/Main.cpp"
         "Components/OutputSection.cpp"
         "Components/PresetComponent.cpp"
         "Components/SliderComponent.cpp"
