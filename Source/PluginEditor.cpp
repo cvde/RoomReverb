@@ -22,7 +22,6 @@
 ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& processor)
         : AudioProcessorEditor(&processor),
           applicationState(processor.getApplicationState()),
-          customLookAndFeel(*this),
           headerSection(processor, aboutDialog),
           outputSection(processor),
           earlySection(processor),

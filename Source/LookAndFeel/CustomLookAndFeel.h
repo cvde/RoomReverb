@@ -20,11 +20,12 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-    explicit CustomLookAndFeel(juce::Component&);
+    CustomLookAndFeel();
 
     juce::Component* getParentComponentForMenuOptions (const juce::PopupMenu::Options&) override;
 
@@ -61,7 +62,6 @@ public:
 
 private:
     juce::Font defaultFont;
-    juce::Component& topLevelComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomLookAndFeel)
 };
