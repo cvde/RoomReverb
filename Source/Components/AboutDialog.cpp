@@ -39,7 +39,8 @@ AboutDialog::AboutDialog()
     pluginInfo.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(pluginInfo);
 
-    vstLogo = juce::Drawable::createFromImageData(BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svg, BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svgSize);
+    if (pluginHostType.getPluginLoadedAs() == juce::AudioProcessor::wrapperType_VST3)
+        vstLogo = juce::Drawable::createFromImageData(BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svg, BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svgSize);
 
     setAlwaysOnTop(true);
 }
@@ -69,8 +70,10 @@ void AboutDialog::resized()
     auto titleBar = area.removeFromTop(titleBarHeight);
     closeButton.setBounds(titleBar.removeFromRight(titleBarHeight).reduced(10));
 
-    logoBounds = area.removeFromTop(40).reduced(5).toFloat();
-    if (pluginHostType.getPluginLoadedAs() == juce::AudioProcessor::wrapperType_VST3)
+    if (logo != nullptr)
+        logoBounds = area.removeFromTop(40).reduced(5).toFloat();
+
+    if (vstLogo != nullptr)
         vstLogoBounds = area.removeFromBottom(150).reduced(5).toFloat();
 
     pluginInfo.setBounds(area);
