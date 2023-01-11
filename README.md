@@ -18,7 +18,7 @@ git clone --recurse-submodules https://github.com/cvde/RoomReverb.git
 cd RoomReverb
 
 # Build plugin with CMake
-cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake -B build
 cmake --build build
 ```
 After a successful build, the plugin binaries can be found in `build/RoomReverb_artefacts`.
