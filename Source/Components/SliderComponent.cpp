@@ -27,8 +27,8 @@ SliderComponent::SliderComponent(
     const int binaryIconSize,
     const juce::String& parameterInfoText)
         : parameters(processor.getParameters()),
-          parameterSliderAttachment(processor.getParameters(), parameterID, parameterSlider),
-          presetManager(processor.getPresetManager())
+          presetManager(processor.getPresetManager()),
+          parameterSliderAttachment(processor.getParameters(), parameterID, parameterSlider)
 {
     parameterIcon = juce::Drawable::createFromImageData(binaryIcon, binaryIconSize);
     addAndMakeVisible(parameterIcon.get());
