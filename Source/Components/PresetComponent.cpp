@@ -23,10 +23,21 @@ PresetComponent::PresetComponent(ReverbAudioProcessor& processor)
         : parameters(processor.getParameters()),
           presetManager(processor.getPresetManager())
 {
-    // add all presets to the combobox
-    for (int i = 0; i < presetManager.getNumPresets(); ++i)
+    // add default preset (index is 0) to the combobox
+    presetSelector.addItem(presetManager.getPresetName(0), 1);
+    // add other presets (index > 0) to their category
+    for (int i = 1; i < presetManager.getNumPresets(); ++i)
     {
-        presetSelector.addItem(presetManager.getPresetName(i), i + 1);
+        if (presetCategorySubmenus.empty() || presetManager.getPresetCategory(i) != presetCategorySubmenus.back().name)
+        {
+            presetCategorySubmenus.push_back({presetManager.getPresetCategory(i), juce::PopupMenu()});
+        }
+        presetCategorySubmenus.back().popupMenu.addItem(i + 1, presetManager.getPresetName(i));
+    }
+    // add submenus to the combobox
+    for (const auto& submenu : presetCategorySubmenus)
+    {
+        presetSelector.getRootMenu()->addSubMenu(submenu.name, submenu.popupMenu);
     }
     presetSelector.setTooltip("Select a preset (overrides your current plugin settings).");
     presetSelector.setJustificationType(juce::Justification::centred);

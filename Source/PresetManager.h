@@ -25,6 +25,7 @@
 struct Preset
 {
     juce::String presetName;
+    juce::String presetCategory;
     juce::ValueTree presetXml;
 };
 
@@ -38,6 +39,7 @@ public:
     void setCurrentPreset(int presetIndex);
     void setDefaultPreset();
     juce::String getPresetName(int presetIndex) const;
+    juce::String getPresetCategory(int presetIndex) const;
 
     bool isParameterLocked(const juce::String& parameterID);
     void lockParameter(const juce::String& parameterID);
