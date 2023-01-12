@@ -28,7 +28,7 @@ class SliderComponent : public juce::Component
 {
 public:
     SliderComponent(
-        ReverbAudioProcessor& processor,
+        ReverbAudioProcessor& audioProcessor,
         const juce::String& parameterID,
         const char* binaryIcon,
         const int binaryIconSize,

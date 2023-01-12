@@ -27,7 +27,7 @@
 class LateSection : public juce::Component
 {
 public:
-    LateSection(ReverbAudioProcessor& processor);
+    LateSection(ReverbAudioProcessor& audioProcessor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

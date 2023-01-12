@@ -19,10 +19,10 @@
 
 #include "PluginEditor.h"
 
-ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& processor)
-        : AudioProcessorEditor(&processor),
-          applicationState(processor.getApplicationState()),
-          main(processor)
+ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& audioProcessor)
+        : AudioProcessorEditor(&audioProcessor),
+          applicationState(audioProcessor.getApplicationState()),
+          main(audioProcessor)
 {
     juce::LookAndFeel::setDefaultLookAndFeel(&customLookAndFeel);
     setLookAndFeel(&customLookAndFeel);

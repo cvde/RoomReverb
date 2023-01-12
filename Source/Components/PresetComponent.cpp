@@ -19,9 +19,9 @@
 
 #include "PresetComponent.h"
 
-PresetComponent::PresetComponent(ReverbAudioProcessor& processor)
-        : parameters(processor.getParameters()),
-          presetManager(processor.getPresetManager())
+PresetComponent::PresetComponent(ReverbAudioProcessor& audioProcessor)
+        : parameters(audioProcessor.getParameters()),
+          presetManager(audioProcessor.getPresetManager())
 {
     // add default preset (index is 0) to the combobox
     presetSelector.addItem(presetManager.getPresetName(0), 1);

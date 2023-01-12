@@ -31,7 +31,7 @@
 class HeaderSection : public juce::Component
 {
 public:
-    HeaderSection(ReverbAudioProcessor& processor, AboutDialog& aboutDialogComponent);
+    HeaderSection(ReverbAudioProcessor& audioProcessor, AboutDialog& aboutDialogComponent);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

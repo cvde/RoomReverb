@@ -19,11 +19,11 @@
 
 #include "Main.h"
 
-Main::Main(ReverbAudioProcessor& processor)
-        : headerSection(processor, aboutDialog),
-          outputSection(processor),
-          earlySection(processor),
-          lateSection(processor)
+Main::Main(ReverbAudioProcessor& audioProcessor)
+        : headerSection(audioProcessor, aboutDialog),
+          outputSection(audioProcessor),
+          earlySection(audioProcessor),
+          lateSection(audioProcessor)
 {
     // background of tooltips (rounded corners) should be transparent
     tooltipWindow.setOpaque(false);
@@ -44,8 +44,8 @@ void Main::resized()
 {
     auto area = getLocalBounds().reduced(2);
 
-    const int aboutDialogHeight = area.getHeight() * 0.75f;
-    const int aboutDialogWidth = area.getWidth() * 0.5f;
+    const int aboutDialogHeight = (int)(area.getHeight() * 0.75f);
+    const int aboutDialogWidth = area.getWidth() / 2;
     aboutDialog.setBounds(area.getCentreX() - aboutDialogWidth / 2, area.getCentreY() - aboutDialogHeight / 2, aboutDialogWidth, aboutDialogHeight);
 
     const int headerSectionHeight = juce::jlimit(50, 60, (area.getHeight() / 15));

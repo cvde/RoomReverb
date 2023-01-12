@@ -27,7 +27,7 @@
 class OutputSection : public juce::Component
 {
 public:
-    OutputSection(ReverbAudioProcessor& processor);
+    OutputSection(ReverbAudioProcessor& audioProcessor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

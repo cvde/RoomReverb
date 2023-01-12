@@ -34,7 +34,7 @@ struct PresetCategorySubmenu
 class PresetComponent : public juce::Component, public juce::ValueTree::Listener
 {
 public:
-    PresetComponent(ReverbAudioProcessor& processor);
+    PresetComponent(ReverbAudioProcessor& audioProcessor);
     ~PresetComponent() override;
 
     void paint(juce::Graphics& g) override;

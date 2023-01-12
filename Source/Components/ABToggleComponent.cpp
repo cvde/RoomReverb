@@ -19,8 +19,8 @@
 
 #include "ABToggleComponent.h"
 
-ABToggleComponent::ABToggleComponent(ReverbAudioProcessor& processor)
-        : processorABStateManager(processor.getProcessorABStateManager())
+ABToggleComponent::ABToggleComponent(ReverbAudioProcessor& audioProcessor)
+        : processorABStateManager(audioProcessor.getProcessorABStateManager())
 {
     aButton.setName("A");
     aButton.setButtonText("A");

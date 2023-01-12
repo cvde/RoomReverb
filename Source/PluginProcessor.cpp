@@ -138,7 +138,7 @@ void ReverbAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     juce::ignoreUnused(samplesPerBlock);
-    reverb.setSampleRate(sampleRate);
+    reverb.setSampleRate((float)sampleRate);
 }
 
 void ReverbAudioProcessor::releaseResources()

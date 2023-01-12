@@ -26,7 +26,7 @@
 class UndoComponent : public juce::Component, private juce::ChangeListener
 {
 public:
-    UndoComponent(ReverbAudioProcessor& processor);
+    UndoComponent(ReverbAudioProcessor& audioProcessor);
     ~UndoComponent() override;
 
     void paint(juce::Graphics& g) override;

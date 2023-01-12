@@ -27,7 +27,7 @@
 class ABToggleComponent : public juce::Component
 {
 public:
-    ABToggleComponent(ReverbAudioProcessor& processor);
+    ABToggleComponent(ReverbAudioProcessor& audioProcessor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

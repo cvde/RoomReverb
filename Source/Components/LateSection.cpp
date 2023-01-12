@@ -20,20 +20,20 @@
 #include "LateSection.h"
 #include <BinaryData.h>
 
-LateSection::LateSection(ReverbAudioProcessor& processor)
-        : lateDamping(processor, "lateDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize,
+LateSection::LateSection(ReverbAudioProcessor& audioProcessor)
+        : lateDamping(audioProcessor, "lateDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize,
                       "Damping determines the frequency at which the higher frequencies of the late reverberation are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
-          lateDiffusion(processor, "lateDiffusion", BinaryData::parameter_diffusion_svg, BinaryData::parameter_diffusion_svgSize,
+          lateDiffusion(audioProcessor, "lateDiffusion", BinaryData::parameter_diffusion_svg, BinaryData::parameter_diffusion_svgSize,
                         "Diffusion determines the dispersion of the late reverberation. Higher values produce more dispersion and sound smoother."),
-          latePredelay(processor, "latePredelay", BinaryData::parameter_predelay_svg, BinaryData::parameter_predelay_svgSize,
+          latePredelay(audioProcessor, "latePredelay", BinaryData::parameter_predelay_svg, BinaryData::parameter_predelay_svgSize,
                        "Predelay determines the time between the dry signal and the beginning of the late reverberation. Higher values increase the time and make the virtual room appear larger."),
-          lateRoomSize(processor, "lateRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize,
+          lateRoomSize(audioProcessor, "lateRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize,
                        "Room Size determines the size of the virtual room in which the late reverberation appears. Higher values give the impression of a larger room."),
-          lateDecay(processor, "lateDecay", BinaryData::parameter_decay_svg, BinaryData::parameter_decay_svgSize,
+          lateDecay(audioProcessor, "lateDecay", BinaryData::parameter_decay_svg, BinaryData::parameter_decay_svgSize,
                     "Decay is the time needed for the late reverberation to fade away. Higher values increase the time and make the virtual room appear larger."),
-          lateSpin(processor, "lateSpin", BinaryData::parameter_spin_svg, BinaryData::parameter_spin_svgSize,
+          lateSpin(audioProcessor, "lateSpin", BinaryData::parameter_spin_svg, BinaryData::parameter_spin_svgSize,
                    "Spin determines the modulation rate of the late reverberation. Higher values produce more movement within the late reverberation."),
-          lateWander(processor, "lateWander", BinaryData::parameter_wander_svg, BinaryData::parameter_wander_svgSize,
+          lateWander(audioProcessor, "lateWander", BinaryData::parameter_wander_svg, BinaryData::parameter_wander_svgSize,
                      "Wander determines the strength of the late reverberation modulation. Higher values make the movement more audible.")
 {
     sectionTitle.setText("Late Reverb", juce::dontSendNotification);

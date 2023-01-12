@@ -20,10 +20,10 @@
 #include "EarlySection.h"
 #include <BinaryData.h>
 
-EarlySection::EarlySection(ReverbAudioProcessor& processor)
-        : earlyDamping(processor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize,
+EarlySection::EarlySection(ReverbAudioProcessor& audioProcessor)
+        : earlyDamping(audioProcessor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize,
                        "Damping determines the frequency at which higher frequencies of the early reflections are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
-          earlyRoomSize(processor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize,
+          earlyRoomSize(audioProcessor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize,
                         "Room Size determines the size of the virtual room in which the early reflections appear. Higher values give the impression of a larger room.")
 {
     sectionTitle.setText("Early Reflections", juce::dontSendNotification);

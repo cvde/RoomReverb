@@ -28,7 +28,7 @@
 class Main : public juce::Component
 {
 public:
-    Main(ReverbAudioProcessor& processor);
+    Main(ReverbAudioProcessor& audioProcessor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

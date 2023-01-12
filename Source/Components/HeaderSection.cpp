@@ -21,11 +21,11 @@
 #include <BinaryData.h>
 
 HeaderSection::HeaderSection(
-    ReverbAudioProcessor& processor,
+    ReverbAudioProcessor& audioProcessor,
     AboutDialog& aboutDialogComponent)
-        : undo(processor),
-          preset(processor),
-          abToggle(processor),
+        : undo(audioProcessor),
+          preset(audioProcessor),
+          abToggle(audioProcessor),
           aboutDialog(aboutDialogComponent)
 {
     addAndMakeVisible(logo);
@@ -48,11 +48,11 @@ void HeaderSection::paint(juce::Graphics& g)
 void HeaderSection::resized()
 {
     auto area = getLocalBounds().reduced(2);
-    const int logoWidth = area.getWidth() * 0.34f;
-    const int undoWidth = area.getWidth() * 0.12f;
-    const int presetWidth = area.getWidth() * 0.3f;
-    const int abToggleWidth = area.getWidth() * 0.18f;
-    const int aboutButtonWidth = area.getWidth() * 0.06f;
+    const int logoWidth = (int)(area.getWidth() * 0.34f);
+    const int undoWidth = (int)(area.getWidth() * 0.12f);
+    const int presetWidth = (int)(area.getWidth() * 0.3f);
+    const int abToggleWidth = (int)(area.getWidth() * 0.18f);
+    const int aboutButtonWidth = (int)(area.getWidth() * 0.06f);
 
     logo.setBounds(area.removeFromLeft(logoWidth).reduced(5));
     undo.setBounds(area.removeFromLeft(undoWidth).reduced(5));

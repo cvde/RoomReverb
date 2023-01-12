@@ -27,7 +27,7 @@
 class EarlySection : public juce::Component
 {
 public:
-    EarlySection(ReverbAudioProcessor& processor);
+    EarlySection(ReverbAudioProcessor& audioProcessor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;

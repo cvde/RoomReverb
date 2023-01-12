@@ -20,8 +20,8 @@
 #include "UndoComponent.h"
 #include <BinaryData.h>
 
-UndoComponent::UndoComponent(ReverbAudioProcessor& processor)
-        : parameters(processor.getParameters())
+UndoComponent::UndoComponent(ReverbAudioProcessor& audioProcessor)
+        : parameters(audioProcessor.getParameters())
 {
     undoButton.setImages(juce::Drawable::createFromImageData(BinaryData::undo_svg, BinaryData::undo_svgSize).get());
     undoButton.onClick = [this] { parameters.undoManager->undo(); };

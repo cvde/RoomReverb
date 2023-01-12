@@ -67,7 +67,7 @@ PresetManager::PresetManager(juce::AudioProcessorValueTreeState& parameterTree, 
 
 int PresetManager::getNumPresets() const
 {
-    return presets.size();
+    return (int)presets.size();
 }
 
 int PresetManager::getCurrentPreset() const
