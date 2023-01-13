@@ -24,6 +24,7 @@
 #include "HeaderSection.h"
 #include "LateSection.h"
 #include "OutputSection.h"
+#include <juce_gui_extra/juce_gui_extra.h>
 
 class Main : public juce::Component
 {
@@ -42,6 +43,8 @@ private:
 
     // make tooltips visible
     juce::TooltipWindow tooltipWindow{this, 300};
+
+    juce::BubbleMessageComponent bubbleTooltip;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Main)
 };

@@ -25,9 +25,11 @@ SliderComponent::SliderComponent(
     const juce::String& parameterID,
     const char* binaryIcon,
     const int binaryIconSize,
+    juce::BubbleMessageComponent& bubbleTooltip,
     const juce::String& parameterInfoText)
         : parameters(audioProcessor.getParameters()),
           presetManager(audioProcessor.getPresetManager()),
+          parameterInfoButton(bubbleTooltip, parameterInfoText),
           parameterSliderAttachment(audioProcessor.getParameters(), parameterID, parameterSlider)
 {
     parameterIcon = juce::Drawable::createFromImageData(binaryIcon, (size_t)binaryIconSize);
@@ -37,8 +39,6 @@ SliderComponent::SliderComponent(
     parameterLabel.setFont(juce::Font(20.0f));
     addAndMakeVisible(parameterLabel);
 
-    parameterInfoButton.setImages(juce::Drawable::createFromImageData(BinaryData::info_svg, BinaryData::info_svgSize).get());
-    parameterInfoButton.setTooltip(parameterInfoText);
     addAndMakeVisible(parameterInfoButton);
 
     parameterSlider.setTextValueSuffix(parameters.getParameter(parameterID)->getLabel());

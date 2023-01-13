@@ -21,6 +21,7 @@
 
 #include "../PluginProcessor.h"
 #include "../PresetManager.h"
+#include "InfoButtonComponent.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -32,6 +33,7 @@ public:
         const juce::String& parameterID,
         const char* binaryIcon,
         const int binaryIconSize,
+        juce::BubbleMessageComponent& bubbleTooltip,
         const juce::String& parameterInfoText);
 
     void paint(juce::Graphics& g) override;
@@ -42,7 +44,7 @@ private:
     PresetManager& presetManager;
     std::unique_ptr<juce::Drawable> parameterIcon;
     juce::Label parameterLabel;
-    juce::DrawableButton parameterInfoButton{"parameterInfoButton", juce::DrawableButton::ImageFitted};
+    InfoButtonComponent parameterInfoButton;
     juce::Slider parameterSlider;
     juce::DrawableButton parameterLockButton{"parameterLockButton", juce::DrawableButton::ImageFitted};
     juce::AudioProcessorValueTreeState::SliderAttachment parameterSliderAttachment;

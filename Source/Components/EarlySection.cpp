@@ -20,20 +20,17 @@
 #include "EarlySection.h"
 #include <BinaryData.h>
 
-EarlySection::EarlySection(ReverbAudioProcessor& audioProcessor)
-        : earlyDamping(audioProcessor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize,
+EarlySection::EarlySection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessageComponent& bubbleTooltip)
+        : sectionInfoButton(bubbleTooltip, "Early reflections are produced by the dry signal bouncing off a wall and directly returning to the listener's ear."),
+          earlyDamping(audioProcessor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize, bubbleTooltip,
                        "Damping determines the frequency at which higher frequencies of the early reflections are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
-          earlyRoomSize(audioProcessor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize,
+          earlyRoomSize(audioProcessor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize, bubbleTooltip,
                         "Room Size determines the size of the virtual room in which the early reflections appear. Higher values give the impression of a larger room.")
 {
     sectionTitle.setText("Early Reflections", juce::dontSendNotification);
     sectionTitle.setFont(juce::Font(26.0f));
     addAndMakeVisible(sectionTitle);
-
-    parameterInfoButton.setImages(juce::Drawable::createFromImageData(BinaryData::info_svg, BinaryData::info_svgSize).get());
-    parameterInfoButton.setTooltip("Early reflections are produced by the dry signal bouncing off a wall and directly returning to the listener's ear.");
-    addAndMakeVisible(parameterInfoButton);
-
+    addAndMakeVisible(sectionInfoButton);
     addAndMakeVisible(earlyDamping);
     addAndMakeVisible(earlyRoomSize);
 }
@@ -54,7 +51,7 @@ void EarlySection::resized()
     const int sectionTitleTextWidth = sectionTitle.getFont().getStringWidth(sectionTitle.getText()) + 10;
     sectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
     // placing the info button
-    parameterInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
+    sectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
 
     earlyRoomSize.setBounds(area.removeFromTop(elementHeight));
     earlyDamping.setBounds(area.removeFromTop(elementHeight));

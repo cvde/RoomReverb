@@ -5,6 +5,7 @@ target_sources(${PROJECT_NAME}
         "Components/ABToggleComponent.cpp"
         "Components/EarlySection.cpp"
         "Components/HeaderSection.cpp"
+        "Components/InfoButtonComponent.cpp"
         "Components/LateSection.cpp"
         "Components/LogoComponent.cpp"
         "Components/Main.cpp"

@@ -62,6 +62,9 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::TooltipWindow::backgroundColourId, juce::Colour(0xff5e5e5e));
     setColour(juce::TooltipWindow::outlineColourId, juce::Colour(0xffc6c6c6));
 
+    setColour(juce::BubbleComponent::backgroundColourId, juce::Colour(0xff5e5e5e));
+    setColour(juce::BubbleComponent::outlineColourId, juce::Colour(0xffc6c6c6));
+
     setColour(juce::TextEditor::focusedOutlineColourId, juce::Colour(0xffc6c6c6));
     setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff5e5e5e));
 }

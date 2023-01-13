@@ -21,9 +21,9 @@
 
 Main::Main(ReverbAudioProcessor& audioProcessor)
         : headerSection(audioProcessor, aboutDialog),
-          outputSection(audioProcessor),
-          earlySection(audioProcessor),
-          lateSection(audioProcessor)
+          outputSection(audioProcessor, bubbleTooltip),
+          earlySection(audioProcessor, bubbleTooltip),
+          lateSection(audioProcessor, bubbleTooltip)
 {
     // background of tooltips (rounded corners) should be transparent
     tooltipWindow.setOpaque(false);
@@ -33,6 +33,7 @@ Main::Main(ReverbAudioProcessor& audioProcessor)
     addAndMakeVisible(earlySection);
     addAndMakeVisible(lateSection);
     addChildComponent(aboutDialog); // initially not visible
+    addChildComponent(bubbleTooltip);
 }
 
 void Main::paint(juce::Graphics& g)

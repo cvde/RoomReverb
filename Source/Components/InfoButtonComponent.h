@@ -1,7 +1,7 @@
 /**
  *  ElephantDSP.com Room Reverb
  *
- *  Copyright (C) 2021 Christian Voigt
+ *  Copyright (C) 2023 Christian Voigt
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,25 +19,23 @@
 
 #pragma once
 
-#include "../PluginProcessor.h"
-#include "InfoButtonComponent.h"
-#include "SliderComponent.h"
-#include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_gui_extra/juce_gui_extra.h>
 
-class EarlySection : public juce::Component
+class InfoButtonComponent : public juce::Component
 {
 public:
-    EarlySection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessageComponent& bubbleTooltip);
+    InfoButtonComponent(juce::BubbleMessageComponent& bubbleTooltip, const juce::String& text);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
-    juce::Label sectionTitle;
-    InfoButtonComponent sectionInfoButton;
-    SliderComponent earlyDamping;
-    SliderComponent earlyRoomSize;
+    void showBubbleMessageTooltip();
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EarlySection)
+    juce::DrawableButton infoButton{"infoButton", juce::DrawableButton::ImageFitted};
+    juce::BubbleMessageComponent& bubbleMessageTooltip;
+    juce::AttributedString infoText;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InfoButtonComponent)
 };

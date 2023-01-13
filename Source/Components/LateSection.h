@@ -20,6 +20,7 @@
 #pragma once
 
 #include "../PluginProcessor.h"
+#include "InfoButtonComponent.h"
 #include "SliderComponent.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -27,14 +28,14 @@
 class LateSection : public juce::Component
 {
 public:
-    LateSection(ReverbAudioProcessor& audioProcessor);
+    LateSection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessageComponent& bubbleTooltip);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
     juce::Label sectionTitle;
-    juce::DrawableButton parameterInfoButton{"parameterInfoButton", juce::DrawableButton::ImageFitted};
+    InfoButtonComponent sectionInfoButton;
     SliderComponent lateDamping;
     SliderComponent lateDiffusion;
     SliderComponent latePredelay;
