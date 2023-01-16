@@ -1,4 +1,4 @@
-# ElephantDSP.com Room Reverb
+# Room Reverb
 
 Room Reverb is a mono/stereo to stereo algorithmic reverb audio plugin with many presets. It uses the implementation of Moorer's early reflection model and Jon Dattorro's Progenitor Reverb from the Freeverb3 signal processing library.
 
