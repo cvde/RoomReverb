@@ -1,7 +1,7 @@
 /**
  *  ElephantDSP.com Room Reverb
  *
- *  Copyright (C) 2021 Christian Voigt
+ *  Copyright (C) 2023 Christian Voigt
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,28 +19,27 @@
 
 #pragma once
 
-#include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_product_unlocking/in_app_purchases/juce_InAppPurchases.h>
 
-class AboutDialog : public juce::Component
+class DonationSelector : public juce::ComboBox,
+                         private juce::InAppPurchases::Listener
 {
 public:
-    AboutDialog();
+    struct DonationProduct
+    {
+        juce::String identifier;
+        juce::String purchasePrice;
+    };
 
-    void paint(juce::Graphics&) override;
-    void resized() override;
+    DonationSelector();
+    ~DonationSelector() override;
 
 private:
-    juce::ShapeButton closeButton{"Close", juce::Colours::white, juce::Colours::white.withAlpha(0.2f), juce::Colours::white.withAlpha(0.4f)};
-    std::unique_ptr<juce::Drawable> logo;
-    juce::Rectangle<float> logoBounds;
-    juce::Label pluginInfo;
-    std::unique_ptr<juce::Component> donateCTA;
-    juce::Label versionInfo;
-    std::unique_ptr<juce::Drawable> vstLogo;
-    juce::Rectangle<float> vstLogoBounds;
+    void productsInfoReturned(const juce::Array<juce::InAppPurchases::Product>& products) override;
+    void purchase(const juce::String& identifier);
 
-    juce::PluginHostType pluginHostType;
+    juce::Array<DonationProduct> donationProducts;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AboutDialog)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DonationSelector)
 };

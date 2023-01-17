@@ -3,6 +3,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         "Components/AboutDialog.cpp"
         "Components/ABToggleComponent.cpp"
+        "Components/DonationSelector.cpp"
         "Components/EarlySection.cpp"
         "Components/HeaderSection.cpp"
         "Components/InfoButtonComponent.cpp"

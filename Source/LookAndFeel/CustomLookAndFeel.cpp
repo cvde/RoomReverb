@@ -48,6 +48,8 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::ResizableWindow::ColourIds::backgroundColourId, juce::Colour(0xff5e5e5e));
     setColour(juce::DocumentWindow::textColourId, juce::Colours::white);
 
+    setColour(juce::HyperlinkButton::textColourId, juce::Colour(0xffdc0000));
+
     setColour(juce::TextButton::buttonColourId, juce::Colour(0xff303030));
     setColour(juce::TextButton::buttonOnColourId, juce::Colour(0xff5e5e5e));
 
