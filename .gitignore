@@ -1,6 +1,7 @@
 # Build Folder
 Builds/
 build/
+build-ios/
 
 # Prerequisites
 *.d

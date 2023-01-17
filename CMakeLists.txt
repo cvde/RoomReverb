@@ -17,6 +17,14 @@ project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 # include JUCE
 add_subdirectory(Libs/JUCE)
 
+# plugin formats to build
+set(PLUGIN_FORMATS VST3 AU LV2) # Standalone Unity VST3 AU AUv3 AAX VST LV2
+
+# plugin formats to build for iOS
+if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    set(PLUGIN_FORMATS Standalone AUv3)
+endif()
+
 juce_add_plugin(${PROJECT_NAME}
     PLUGIN_NAME "Room Reverb"
     PLUGIN_CODE "Errp"
@@ -29,22 +37,27 @@ juce_add_plugin(${PROJECT_NAME}
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
     IS_MIDI_EFFECT FALSE
-    FORMATS VST3 AU LV2 # Standalone Unity VST3 AU AUv3 AAX VST LV2
+    FORMATS ${PLUGIN_FORMATS}
     VST3_CATEGORIES "Fx" "Reverb"
     AAX_CATEGORY "AAX_ePlugInCategory_Reverb"
     AU_MAIN_TYPE "kAudioUnitType_Effect"
     COPY_PLUGIN_AFTER_BUILD TRUE
     EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    # iOS
+    MICROPHONE_PERMISSION_ENABLED TRUE
+    REQUIRES_FULL_SCREEN TRUE
+    IPHONE_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    NEEDS_STORE_KIT TRUE
+    ICON_BIG "Assets/icon_large.png"
 )
 
-# clap-juce-extensions requires CMake 3.21
-if(CMAKE_VERSION VERSION_LESS 3.21.0)
+# clap format
+if(CMAKE_VERSION VERSION_LESS 3.21.0) # clap-juce-extensions requires CMake 3.21
     message(WARNING "Skipped CLAP build. Building CLAP requires CMake 3.21.")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS") # no clap builds for iOS
 else()
-    # include clap extension to build plugin in clap format
     add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
-
-    # configure clap plugin
     clap_juce_extensions_plugin(
         TARGET ${PROJECT_NAME}
         CLAP_ID "com.elephantdsp.roomreverb"
@@ -87,10 +100,23 @@ target_compile_definitions(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         BinaryData
-        juce_audio_processors
-        juce_gui_basics
+        juce::juce_audio_processors
+        juce::juce_audio_utils
+        juce::juce_gui_basics
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+
+# add in-app purchase capabilities for iOS
+if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    target_compile_definitions(${PROJECT_NAME}
+        PUBLIC
+            JUCE_IN_APP_PURCHASES=1
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            juce::juce_product_unlocking
+    )
+endif()
