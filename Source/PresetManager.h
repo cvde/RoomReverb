@@ -20,18 +20,17 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
-#include <vector>
-
-struct Preset
-{
-    juce::String presetName;
-    juce::String presetCategory;
-    juce::ValueTree presetXml;
-};
 
 class PresetManager
 {
 public:
+    struct Preset
+    {
+        juce::String presetName;
+        juce::String presetCategory;
+        juce::ValueTree presetXml;
+    };
+
     PresetManager(juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree);
 
     int getNumPresets() const;
@@ -48,7 +47,7 @@ public:
 private:
     juce::AudioProcessorValueTreeState& parameters;
     juce::ValueTree& applicationState;
-    std::vector<Preset> presets;
+    juce::Array<Preset> presets;
 
     static constexpr int defaultPreset = 0;
 

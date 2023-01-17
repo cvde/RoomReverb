@@ -25,15 +25,15 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <vector>
 
-struct PresetCategorySubmenu
-{
-    juce::String name;
-    juce::PopupMenu popupMenu;
-};
-
 class PresetComponent : public juce::Component, public juce::ValueTree::Listener
 {
 public:
+    struct PresetCategorySubmenu
+    {
+        juce::String name;
+        juce::PopupMenu popupMenu;
+    };
+
     PresetComponent(ReverbAudioProcessor& audioProcessor);
     ~PresetComponent() override;
 
