@@ -2,12 +2,12 @@
 
 Room Reverb is a mono/stereo to stereo algorithmic reverb audio plugin with many presets. It uses the implementation of Moorer's early reflection model and Jon Dattorro's Progenitor Reverb from the Freeverb3 signal processing library.
 
-You can find more information about Room Reverb on my [website](https://www.elephantdsp.com/products/room-reverb/).
+For more information about Room Reverb, visit my [website](https://www.elephantdsp.com/products/room-reverb/).
 
 ![Room Reverb screenshot](Assets/room-reverb-screenshot.png)
 
 ## Download
-The latest release of Room Reverb can be downloaded on my [website](https://www.elephantdsp.com/products/room-reverb/).
+The latest version of Room Reverb can be downloaded from my [website](https://www.elephantdsp.com/products/room-reverb/) or the iOS version from the [App Store](https://apps.apple.com/app/room-reverb-elephantdsp-com/id1665662082).
 
 ## Building Room Reverb
 
