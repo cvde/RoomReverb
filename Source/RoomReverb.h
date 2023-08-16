@@ -21,6 +21,7 @@
 
 #include "freeverb/earlyref.hpp"
 #include "freeverb/progenitor2.hpp"
+#include <atomic>
 
 class RoomReverb
 {
@@ -59,11 +60,11 @@ private:
     float earlySendLevel;
     float lateLevel;
 
-    bool earlyRoomSizeNeedsUpdate = false;
+    std::atomic<bool> earlyRoomSizeNeedsUpdate = false;
     float earlyRoomSize;
-    bool lateRoomSizeNeedsUpdate = false;
+    std::atomic<bool> lateRoomSizeNeedsUpdate = false;
     float lateRoomSize;
-    bool latePredelayNeedsUpdate = false;
+    std::atomic<bool> latePredelayNeedsUpdate = false;
     float latePredelay;
 
     static constexpr int bufferSize = 512;
