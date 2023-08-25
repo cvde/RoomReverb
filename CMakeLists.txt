@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.22) # JUCE 7.0.7 requires CMake 3.22
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(PROJECT_NAME "RoomReverb")
-set(PROJECT_VERSION "1.0.0")
+set(PROJECT_VERSION "1.1.0")
 
 project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 
@@ -53,10 +53,7 @@ juce_add_plugin(${PROJECT_NAME}
 )
 
 # clap format
-if(CMAKE_VERSION VERSION_LESS 3.21.0) # clap-juce-extensions requires CMake 3.21
-    message(WARNING "Skipped CLAP build. Building CLAP requires CMake 3.21.")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS") # no clap builds for iOS
-else()
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
     add_subdirectory(Libs/clap-juce-extensions EXCLUDE_FROM_ALL)
     clap_juce_extensions_plugin(
         TARGET ${PROJECT_NAME}
