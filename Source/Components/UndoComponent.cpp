@@ -21,24 +21,24 @@
 #include <BinaryData.h>
 
 UndoComponent::UndoComponent(ReverbAudioProcessor& audioProcessor)
-        : parameters(audioProcessor.getParameters())
+        : mParameters(audioProcessor.getParameters())
 {
-    undoButton.setImages(juce::Drawable::createFromImageData(BinaryData::undo_svg, BinaryData::undo_svgSize).get());
-    undoButton.onClick = [this] { parameters.undoManager->undo(); };
-    addAndMakeVisible(undoButton);
+    mUndoButton.setImages(juce::Drawable::createFromImageData(BinaryData::undo_svg, BinaryData::undo_svgSize).get());
+    mUndoButton.onClick = [this] { mParameters.undoManager->undo(); };
+    addAndMakeVisible(mUndoButton);
 
-    redoButton.setImages(juce::Drawable::createFromImageData(BinaryData::redo_svg, BinaryData::redo_svgSize).get());
-    redoButton.onClick = [this] { parameters.undoManager->redo(); };
-    addAndMakeVisible(redoButton);
+    mRedoButton.setImages(juce::Drawable::createFromImageData(BinaryData::redo_svg, BinaryData::redo_svgSize).get());
+    mRedoButton.onClick = [this] { mParameters.undoManager->redo(); };
+    addAndMakeVisible(mRedoButton);
 
     updateButtonState();
-    changeListenerCallback(parameters.undoManager);
-    parameters.undoManager->addChangeListener(this);
+    changeListenerCallback(mParameters.undoManager);
+    mParameters.undoManager->addChangeListener(this);
 }
 
 UndoComponent::~UndoComponent()
 {
-    parameters.undoManager->removeChangeListener(this);
+    mParameters.undoManager->removeChangeListener(this);
 }
 
 void UndoComponent::paint(juce::Graphics& g)
@@ -50,36 +50,38 @@ void UndoComponent::resized()
 {
     auto area = getLocalBounds();
 
-    undoButton.setBounds(area.removeFromLeft(area.getWidth() / 2).reduced(1));
-    redoButton.setBounds(area.reduced(1));
+    mUndoButton.setBounds(area.removeFromLeft(area.getWidth() / 2).reduced(1));
+    mRedoButton.setBounds(area.reduced(1));
 }
 
 void UndoComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-    if (source == parameters.undoManager)
+    if (source == mParameters.undoManager)
+    {
         updateButtonState();
+    }
 }
 
 void UndoComponent::updateButtonState()
 {
-    if (parameters.undoManager->canUndo())
+    if (mParameters.undoManager->canUndo())
     {
-        undoButton.setEnabled(true);
-        undoButton.setTooltip("Undo last change.");
+        mUndoButton.setEnabled(true);
+        mUndoButton.setTooltip("Undo last change.");
     }
     else
     {
-        undoButton.setEnabled(false);
-        undoButton.setTooltip("");
+        mUndoButton.setEnabled(false);
+        mUndoButton.setTooltip("");
     }
-    if (parameters.undoManager->canRedo())
+    if (mParameters.undoManager->canRedo())
     {
-        redoButton.setEnabled(true);
-        redoButton.setTooltip("Redo changes which were undone.");
+        mRedoButton.setEnabled(true);
+        mRedoButton.setTooltip("Redo changes which were undone.");
     }
     else
     {
-        redoButton.setEnabled(false);
-        redoButton.setTooltip("");
+        mRedoButton.setEnabled(false);
+        mRedoButton.setTooltip("");
     }
 }

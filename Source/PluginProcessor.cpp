@@ -33,35 +33,29 @@ ReverbAudioProcessor::ReverbAudioProcessor()
 #endif
                   ),
 #endif
-          parameters(*this, &undo, "parameters", createParameterLayout()),
-          presetManager(parameters, applicationState),
-          processorABStateManager(parameters, applicationState)
+          mParameters(*this, &mUndoManager, "parameters", createParameterLayout()),
+          mPresetManager(mParameters, mApplicationState),
+          mProcessorABStateManager(mParameters, mApplicationState)
 {
-    // add a listener for each parameter
-    parameters.addParameterListener("dryLevel", this);
-    parameters.addParameterListener("earlyLevel", this);
-    parameters.addParameterListener("earlySendLevel", this);
-    parameters.addParameterListener("lateLevel", this);
-    parameters.addParameterListener("stereoWidth", this);
-    parameters.addParameterListener("earlyDamping", this);
-    parameters.addParameterListener("earlyRoomSize", this);
-    parameters.addParameterListener("lateDamping", this);
-    parameters.addParameterListener("lateDiffusion", this);
-    parameters.addParameterListener("latePredelay", this);
-    parameters.addParameterListener("lateRoomSize", this);
-    parameters.addParameterListener("lateDecay", this);
-    parameters.addParameterListener("lateSpin", this);
-    parameters.addParameterListener("lateWander", this);
+    mParameters.addParameterListener("dryLevel", this);
+    mParameters.addParameterListener("earlyLevel", this);
+    mParameters.addParameterListener("earlySendLevel", this);
+    mParameters.addParameterListener("lateLevel", this);
+    mParameters.addParameterListener("stereoWidth", this);
+    mParameters.addParameterListener("earlyDamping", this);
+    mParameters.addParameterListener("earlyRoomSize", this);
+    mParameters.addParameterListener("lateDamping", this);
+    mParameters.addParameterListener("lateDiffusion", this);
+    mParameters.addParameterListener("latePredelay", this);
+    mParameters.addParameterListener("lateRoomSize", this);
+    mParameters.addParameterListener("lateDecay", this);
+    mParameters.addParameterListener("lateSpin", this);
+    mParameters.addParameterListener("lateWander", this);
 
-    // load the default preset
-    presetManager.setDefaultPreset();
+    mPresetManager.setDefaultPreset();
 
     // the inactive processor state is initially a copy of the active processor state
-    processorABStateManager.copyActiveToInactiveProcessorState();
-}
-
-ReverbAudioProcessor::~ReverbAudioProcessor()
-{
+    mProcessorABStateManager.copyActiveToInactiveProcessorState();
 }
 
 //==============================================================================
@@ -138,14 +132,14 @@ void ReverbAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     juce::ignoreUnused(samplesPerBlock);
-    reverb.setSampleRate((float)sampleRate);
+    mRoomReverb.setSampleRate(static_cast<float>(sampleRate));
 }
 
 void ReverbAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    reverb.mute();
+    mRoomReverb.mute();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -162,12 +156,16 @@ bool ReverbAudioProcessor::isBusesLayoutSupported(
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono() &&
         layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    {
         return false;
+    }
 
-        // This checks if the input layout matches the output layout
+    // This checks if the input layout matches the output layout
 #if !JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+    {
         return false;
+    }
 #endif
 
     return true;
@@ -187,16 +185,16 @@ void ReverbAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     if (totalNumInputChannels == 1 && totalNumOutputChannels == 2)
     {
         // mono in, stereo out
-        reverb.process(buffer.getReadPointer(0), buffer.getReadPointer(0),
-                       buffer.getWritePointer(0), buffer.getWritePointer(1),
-                       buffer.getNumSamples());
+        mRoomReverb.process(buffer.getReadPointer(0), buffer.getReadPointer(0),
+                            buffer.getWritePointer(0), buffer.getWritePointer(1),
+                            buffer.getNumSamples());
     }
     else if (totalNumInputChannels == 2 && totalNumOutputChannels == 2)
     {
         // stereo in, stereo out
-        reverb.process(buffer.getReadPointer(0), buffer.getReadPointer(1),
-                       buffer.getWritePointer(0), buffer.getWritePointer(1),
-                       buffer.getNumSamples());
+        mRoomReverb.process(buffer.getReadPointer(0), buffer.getReadPointer(1),
+                            buffer.getWritePointer(0), buffer.getWritePointer(1),
+                            buffer.getNumSamples());
     }
     else
     {
@@ -221,10 +219,10 @@ void ReverbAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
-    juce::ValueTree pluginState{"pluginState"};
-    pluginState.appendChild(parameters.copyState(), nullptr);
-    pluginState.appendChild(processorABStateManager.getInactiveProcessorState(), nullptr);
-    pluginState.appendChild(applicationState, nullptr);
+    juce::ValueTree pluginState("pluginState");
+    pluginState.appendChild(mParameters.copyState(), nullptr);
+    pluginState.appendChild(mProcessorABStateManager.getInactiveProcessorState(), nullptr);
+    pluginState.appendChild(mApplicationState, nullptr);
 
     std::unique_ptr<juce::XmlElement> pluginStateXml(pluginState.createXml());
     copyXmlToBinary(*pluginStateXml, destData);
@@ -246,24 +244,24 @@ void ReverbAudioProcessor::setStateInformation(const void* data,
         for (const auto* subTree : pluginStateXml->getChildIterator())
         {
             // set parameters & inactive Parameters
-            if (subTree->hasTagName(parameters.state.getType()))
+            if (subTree->hasTagName(mParameters.state.getType()))
             {
                 // there are two trees with the same tag
                 // the first one is the active parameter tree
                 if (isActiveParameterTree)
                 {
-                    parameters.replaceState(juce::ValueTree::fromXml(*subTree));
+                    mParameters.replaceState(juce::ValueTree::fromXml(*subTree));
                     isActiveParameterTree = false;
                 }
                 else
                 {
-                    processorABStateManager.setInactiveProcessorState(juce::ValueTree::fromXml(*subTree));
+                    mProcessorABStateManager.setInactiveProcessorState(juce::ValueTree::fromXml(*subTree));
                 }
             }
             // set applicationState
-            if (subTree->hasTagName(applicationState.getType()))
+            if (subTree->hasTagName(mApplicationState.getType()))
             {
-                applicationState = juce::ValueTree::fromXml(*subTree);
+                mApplicationState = juce::ValueTree::fromXml(*subTree);
             }
         }
     }
@@ -279,8 +277,7 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new ReverbAudioProcessor();
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout
-ReverbAudioProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout ReverbAudioProcessor::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout params;
     using Range = juce::NormalisableRange<float>;
@@ -309,59 +306,59 @@ void ReverbAudioProcessor::parameterChanged(const juce::String& parameter, float
 
     if (parameter == "dryLevel")
     {
-        reverb.setDryLevel(newValue);
+        mRoomReverb.setDryLevel(newValue);
     }
     else if (parameter == "earlyLevel")
     {
-        reverb.setEarlyLevel(newValue);
+        mRoomReverb.setEarlyLevel(newValue);
     }
     else if (parameter == "earlySendLevel")
     {
-        reverb.setEarlySendLevel(newValue);
+        mRoomReverb.setEarlySendLevel(newValue);
     }
     else if (parameter == "lateLevel")
     {
-        reverb.setLateLevel(newValue);
+        mRoomReverb.setLateLevel(newValue);
     }
     else if (parameter == "earlyDamping")
     {
-        reverb.setEarlyDamping(newValue);
+        mRoomReverb.setEarlyDamping(newValue);
     }
     else if (parameter == "earlyRoomSize")
     {
-        reverb.setEarlyRoomSize(newValue);
+        mRoomReverb.setEarlyRoomSize(newValue);
     }
     else if (parameter == "lateDamping")
     {
-        reverb.setLateDamping(newValue);
+        mRoomReverb.setLateDamping(newValue);
     }
     else if (parameter == "lateDiffusion")
     {
-        reverb.setLateDiffusion(newValue);
+        mRoomReverb.setLateDiffusion(newValue);
     }
     else if (parameter == "latePredelay")
     {
-        reverb.setLatePredelay(newValue);
+        mRoomReverb.setLatePredelay(newValue);
     }
     else if (parameter == "lateRoomSize")
     {
-        reverb.setLateRoomSize(newValue);
+        mRoomReverb.setLateRoomSize(newValue);
     }
     else if (parameter == "lateDecay")
     {
-        reverb.setLateDecay(newValue);
+        mRoomReverb.setLateDecay(newValue);
     }
     else if (parameter == "lateSpin")
     {
-        reverb.setLateSpin(newValue);
+        mRoomReverb.setLateSpin(newValue);
     }
     else if (parameter == "lateWander")
     {
-        reverb.setLateWander(newValue);
+        mRoomReverb.setLateWander(newValue);
     }
     else if (parameter == "stereoWidth")
     {
-        reverb.setStereoWidth(newValue);
+        mRoomReverb.setStereoWidth(newValue);
     }
     else
     {
@@ -371,20 +368,20 @@ void ReverbAudioProcessor::parameterChanged(const juce::String& parameter, float
 
 juce::ValueTree& ReverbAudioProcessor::getApplicationState()
 {
-    return applicationState;
+    return mApplicationState;
 }
 
 juce::AudioProcessorValueTreeState& ReverbAudioProcessor::getParameters()
 {
-    return parameters;
+    return mParameters;
 }
 
 PresetManager& ReverbAudioProcessor::getPresetManager()
 {
-    return presetManager;
+    return mPresetManager;
 }
 
 ProcessorABStateManager& ReverbAudioProcessor::getProcessorABStateManager()
 {
-    return processorABStateManager;
+    return mProcessorABStateManager;
 }

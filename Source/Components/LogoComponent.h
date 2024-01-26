@@ -30,8 +30,8 @@ public:
     void resized() override;
 
 private:
-    std::unique_ptr<juce::Drawable> logo;
-    juce::Rectangle<float> logoBounds;
+    std::unique_ptr<juce::Drawable> mLogo;
+    juce::Rectangle<float> mLogoBounds;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LogoComponent)
 };

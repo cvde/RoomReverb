@@ -35,10 +35,10 @@ public:
 private:
     void updateToggleState(const juce::Button& clickedButton);
 
-    ProcessorABStateManager& processorABStateManager;
-    juce::TextButton aButton;
-    juce::TextButton bButton;
-    juce::TextButton copyButton;
+    ProcessorABStateManager& mProcessorABStateManager;
+    juce::TextButton mAButton;
+    juce::TextButton mBButton;
+    juce::TextButton mCopyButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ABToggleComponent)
 };

@@ -36,9 +36,9 @@ private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
     void updateButtonState();
 
-    juce::AudioProcessorValueTreeState& parameters;
-    juce::DrawableButton undoButton{"undo", juce::DrawableButton::ImageOnButtonBackground};
-    juce::DrawableButton redoButton{"redo", juce::DrawableButton::ImageOnButtonBackground};
+    juce::AudioProcessorValueTreeState& mParameters;
+    juce::DrawableButton mUndoButton{"undo", juce::DrawableButton::ImageOnButtonBackground};
+    juce::DrawableButton mRedoButton{"redo", juce::DrawableButton::ImageOnButtonBackground};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(UndoComponent)
 };

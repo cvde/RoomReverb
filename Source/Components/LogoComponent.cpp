@@ -22,16 +22,18 @@
 
 LogoComponent::LogoComponent()
 {
-    logo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
+    mLogo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
 }
 
 void LogoComponent::paint(juce::Graphics& g)
 {
-    if (logo != nullptr)
-        logo->drawWithin(g, logoBounds, juce::RectanglePlacement::xLeft, 1.0f);
+    if (mLogo != nullptr)
+    {
+        mLogo->drawWithin(g, mLogoBounds, juce::RectanglePlacement::xLeft, 1.0f);
+    }
 }
 
 void LogoComponent::resized()
 {
-    logoBounds = getLocalBounds().reduced(5).toFloat();
+    mLogoBounds = getLocalBounds().reduced(5).toFloat();
 }

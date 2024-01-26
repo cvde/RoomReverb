@@ -34,13 +34,13 @@ public:
     void resized() override;
 
 private:
-    juce::Label sectionTitle;
-    InfoButtonComponent sectionInfoButton;
-    SliderComponent dryLevel;
-    SliderComponent earlyLevel;
-    SliderComponent earlySendLevel;
-    SliderComponent lateLevel;
-    SliderComponent stereoWidth;
+    juce::Label mSectionTitle;
+    InfoButtonComponent mSectionInfoButton;
+    SliderComponent mDryLevel;
+    SliderComponent mEarlyLevel;
+    SliderComponent mEarlySendLevel;
+    SliderComponent mLateLevel;
+    SliderComponent mStereoWidth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OutputSection)
 };

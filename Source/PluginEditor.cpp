@@ -21,21 +21,21 @@
 
 ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& audioProcessor)
         : AudioProcessorEditor(&audioProcessor),
-          applicationState(audioProcessor.getApplicationState()),
-          main(audioProcessor)
+          mApplicationState(audioProcessor.getApplicationState()),
+          mMainView(audioProcessor)
 {
-    juce::LookAndFeel::setDefaultLookAndFeel(&customLookAndFeel);
-    setLookAndFeel(&customLookAndFeel);
-    main.setLookAndFeel(&customLookAndFeel);
+    juce::LookAndFeel::setDefaultLookAndFeel(&mCustomLookAndFeel);
+    setLookAndFeel(&mCustomLookAndFeel);
+    mMainView.setLookAndFeel(&mCustomLookAndFeel);
 
-    addAndMakeVisible(main);
+    addAndMakeVisible(mMainView);
 
     // set default or stored previous GUI size
-    const auto& storedGuiWidth = applicationState.getChildWithName("editor").getProperty("width");
-    const auto& storedGuiHeight = applicationState.getChildWithName("editor").getProperty("height");
+    const auto& storedGuiWidth = mApplicationState.getChildWithName("editor").getProperty("width");
+    const auto& storedGuiHeight = mApplicationState.getChildWithName("editor").getProperty("height");
     if (storedGuiWidth.isVoid() || storedGuiHeight.isVoid())
     {
-        setSize(idealWidth, idealHeight);
+        setSize(IDEAL_WIDTH, IDEAL_HEIGHT);
     }
     else
     {
@@ -47,11 +47,11 @@ ReverbAudioProcessorEditor::ReverbAudioProcessorEditor(ReverbAudioProcessor& aud
 ReverbAudioProcessorEditor::~ReverbAudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
-    main.setLookAndFeel(nullptr);
+    mMainView.setLookAndFeel(nullptr);
 
     // store last GUI size
-    applicationState.getOrCreateChildWithName("editor", nullptr).setProperty("width", getWidth(), nullptr);
-    applicationState.getOrCreateChildWithName("editor", nullptr).setProperty("height", getHeight(), nullptr);
+    mApplicationState.getOrCreateChildWithName("editor", nullptr).setProperty("width", getWidth(), nullptr);
+    mApplicationState.getOrCreateChildWithName("editor", nullptr).setProperty("height", getHeight(), nullptr);
 }
 
 //==============================================================================
@@ -66,17 +66,17 @@ void ReverbAudioProcessorEditor::resized()
     const int currentHeight = getHeight();
 
     // scale GUI down if the available space is below the minimum size
-    if (currentWidth < minWidth || currentHeight < minHeight)
+    if (currentWidth < MIN_WIDTH || currentHeight < MIN_HEIGHT)
     {
-        const float scaleX = (float)currentWidth / (float)minWidth;
-        const float scaleY = (float)currentHeight / (float)minHeight;
+        const float scaleX = static_cast<float>(currentWidth) / MIN_WIDTH;
+        const float scaleY = static_cast<float>(currentHeight) / MIN_HEIGHT;
         const float scale = juce::jmin(scaleX, scaleY);
-        main.setTransform(juce::AffineTransform::scale(scale));
-        main.centreWithSize(minWidth, minHeight);
+        mMainView.setTransform(juce::AffineTransform::scale(scale));
+        mMainView.centreWithSize(MIN_WIDTH, MIN_HEIGHT);
     }
     else
     {
-        main.setTransform(juce::AffineTransform::scale(1));
-        main.setBounds(getLocalBounds());
+        mMainView.setTransform(juce::AffineTransform::scale(1));
+        mMainView.setBounds(getLocalBounds());
     }
 }

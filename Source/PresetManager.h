@@ -24,14 +24,7 @@
 class PresetManager
 {
 public:
-    struct Preset
-    {
-        juce::String presetName;
-        juce::String presetCategory;
-        juce::ValueTree presetXml;
-    };
-
-    PresetManager(juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree);
+    PresetManager(juce::AudioProcessorValueTreeState& parameters, juce::ValueTree& applicationState);
 
     int getNumPresets() const;
     int getCurrentPreset() const;
@@ -40,16 +33,22 @@ public:
     juce::String getPresetName(int presetIndex) const;
     juce::String getPresetCategory(int presetIndex) const;
 
-    bool isParameterLocked(const juce::String& parameterID);
+    bool isParameterLocked(const juce::String& parameterID) const;
     void lockParameter(const juce::String& parameterID);
     void unlockParameter(const juce::String& parameterID);
 
 private:
-    juce::AudioProcessorValueTreeState& parameters;
-    juce::ValueTree& applicationState;
-    juce::Array<Preset> presets;
+    juce::AudioProcessorValueTreeState& mParameters;
+    juce::ValueTree& mApplicationState;
 
-    static constexpr int defaultPreset = 0;
+    struct Preset
+    {
+        juce::String presetName;
+        juce::String presetCategory;
+        juce::ValueTree presetXml;
+    };
+    juce::Array<Preset> mPresets;
+    static constexpr int DEFAULT_PRESET = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetManager)
 };

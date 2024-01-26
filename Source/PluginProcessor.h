@@ -29,7 +29,6 @@ class ReverbAudioProcessor : public juce::AudioProcessor, public juce::AudioProc
 public:
     //==============================================================================
     ReverbAudioProcessor();
-    ~ReverbAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -78,12 +77,12 @@ public:
 private:
     //==============================================================================
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-    juce::UndoManager undo;
-    juce::ValueTree applicationState{"application"};
-    juce::AudioProcessorValueTreeState parameters;
-    RoomReverb reverb;
-    PresetManager presetManager;
-    ProcessorABStateManager processorABStateManager;
+    juce::UndoManager mUndoManager;
+    juce::ValueTree mApplicationState{"application"};
+    juce::AudioProcessorValueTreeState mParameters;
+    RoomReverb mRoomReverb;
+    PresetManager mPresetManager;
+    ProcessorABStateManager mProcessorABStateManager;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbAudioProcessor)
 };

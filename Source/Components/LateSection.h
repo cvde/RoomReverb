@@ -34,15 +34,15 @@ public:
     void resized() override;
 
 private:
-    juce::Label sectionTitle;
-    InfoButtonComponent sectionInfoButton;
-    SliderComponent lateDamping;
-    SliderComponent lateDiffusion;
-    SliderComponent latePredelay;
-    SliderComponent lateRoomSize;
-    SliderComponent lateDecay;
-    SliderComponent lateSpin;
-    SliderComponent lateWander;
+    juce::Label mSectionTitle;
+    InfoButtonComponent mSectionInfoButton;
+    SliderComponent mLateDamping;
+    SliderComponent mLateDiffusion;
+    SliderComponent mLatePredelay;
+    SliderComponent mLateRoomSize;
+    SliderComponent mLateDecay;
+    SliderComponent mLateSpin;
+    SliderComponent mLateWander;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LateSection)
 };

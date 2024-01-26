@@ -20,49 +20,49 @@
 #include "ProcessorABStateManager.h"
 
 ProcessorABStateManager::ProcessorABStateManager(
-    juce::AudioProcessorValueTreeState& parameterTree,
-    juce::ValueTree& appStateTree)
-        : parameters(parameterTree),
-          applicationState(appStateTree)
+    juce::AudioProcessorValueTreeState& parameters,
+    juce::ValueTree& applicationState)
+        : mParameters(parameters),
+          mApplicationState(applicationState)
 {
     // A is the initial state of the processor
-    applicationState.getOrCreateChildWithName("processorABState", nullptr).setProperty("currentState", "A", nullptr);
+    mApplicationState.getOrCreateChildWithName("processorABState", nullptr).setProperty("currentState", "A", nullptr);
 }
 
 const juce::var& ProcessorABStateManager::getCurrentProcessorState() const
 {
-    return applicationState.getChildWithName("processorABState").getProperty("currentState");
+    return mApplicationState.getChildWithName("processorABState").getProperty("currentState");
 }
 
 void ProcessorABStateManager::switchProcessorState()
 {
-    // temporarily store the current active parameters
-    const auto oldState = parameters.copyState();
+    // temporarily store the currently active parameters
+    const auto oldState = mParameters.copyState();
 
     // switch to the inactive parameters
-    parameters.replaceState(inactiveParameters);
+    mParameters.replaceState(mInactiveParameters);
     const juce::var processorABState = (getCurrentProcessorState() == "A") ? "B" : "A";
-    applicationState.getChildWithName("processorABState").setProperty("currentState", processorABState, nullptr);
+    mApplicationState.getChildWithName("processorABState").setProperty("currentState", processorABState, nullptr);
 
     // send a notification to the GUI that the parameters have changed
-    // this is not needed for the real (audio) parameters but for the selected preset that is stored in parameters.state
-    parameters.state.sendPropertyChangeMessage("GuiNeedsUpdate");
+    // this is not needed for the real (audio) parameters but for the selected preset that is stored in mParameters.state
+    mParameters.state.sendPropertyChangeMessage("GuiNeedsUpdate");
 
     // store the previously active parameters as inactive parameters
-    inactiveParameters = oldState;
+    mInactiveParameters = oldState;
 }
 
 void ProcessorABStateManager::copyActiveToInactiveProcessorState()
 {
-    inactiveParameters = parameters.copyState();
+    mInactiveParameters = mParameters.copyState();
 }
 
 const juce::ValueTree& ProcessorABStateManager::getInactiveProcessorState() const
 {
-    return inactiveParameters;
+    return mInactiveParameters;
 }
 
 void ProcessorABStateManager::setInactiveProcessorState(const juce::ValueTree& newState)
 {
-    inactiveParameters = newState;
+    mInactiveParameters = newState;
 }

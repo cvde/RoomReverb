@@ -22,41 +22,41 @@
 RoomReverb::RoomReverb()
 {
     // initialize unused freeverb parameters
-    early.setdryr(0.0f);
-    early.setwetr(1.0f);
-    early.loadPresetReflection(0);
-    early.setDiffusionApFreq(150.0f, 4.0f);
-    early.setLRCrossApFreq(750.0f, 4.0f);
-    early.setLRDelay(0.3f);
-    early.setMuteOnChange(false);
-    early.setoutputhpf(4.0f);
-    early.setPreDelay(0.0f);
-    late.setdryr(0.0f);
-    late.setwetr(1.0f);
-    late.setbassap(150.0f, 4.0f);
-    late.setbassboost(0.1f);
-    late.setdamp2(500.0f);
-    late.setbassbw(2.0f);
-    late.setcrossfeed(0.4f);
-    late.setdccutfreq(5.0f);
-    late.setdecay0(0.237f);
-    late.setdecay1(0.938f);
-    late.setdecay2(0.844f);
-    late.setdecay3(0.906f);
-    late.setdecayf(1.000f);
-    late.setdiffusion1(0.375f);
-    late.setdiffusion2(0.312f);
-    late.setdiffusion3(0.406f);
-    late.setdiffusion4(0.25f);
-    late.setmodulationnoise1(0.09f);
-    late.setmodulationnoise2(0.06f);
-    late.setMuteOnChange(false);
-    late.setinputdamp(20000.0f);
-    late.setoutputdampbw(2.0f);
-    late.setReverbType(2);
-    late.setspin2wander(22.0f);
-    late.setspinlimit(20.0f);
-    late.setspinlimit2(12.0f);
+    mEarlyReflections.setdryr(0.0f);
+    mEarlyReflections.setwetr(1.0f);
+    mEarlyReflections.loadPresetReflection(0l);
+    mEarlyReflections.setDiffusionApFreq(150.0f, 4.0f);
+    mEarlyReflections.setLRCrossApFreq(750.0f, 4.0f);
+    mEarlyReflections.setLRDelay(0.3f);
+    mEarlyReflections.setMuteOnChange(false);
+    mEarlyReflections.setoutputhpf(4.0f);
+    mEarlyReflections.setPreDelay(0.0f);
+    mLateReverb.setdryr(0.0f);
+    mLateReverb.setwetr(1.0f);
+    mLateReverb.setbassap(150.0f, 4.0f);
+    mLateReverb.setbassboost(0.1f);
+    mLateReverb.setdamp2(500.0f);
+    mLateReverb.setbassbw(2.0f);
+    mLateReverb.setcrossfeed(0.4f);
+    mLateReverb.setdccutfreq(5.0f);
+    mLateReverb.setdecay0(0.237f);
+    mLateReverb.setdecay1(0.938f);
+    mLateReverb.setdecay2(0.844f);
+    mLateReverb.setdecay3(0.906f);
+    mLateReverb.setdecayf(1.000f);
+    mLateReverb.setdiffusion1(0.375f);
+    mLateReverb.setdiffusion2(0.312f);
+    mLateReverb.setdiffusion3(0.406f);
+    mLateReverb.setdiffusion4(0.25f);
+    mLateReverb.setmodulationnoise1(0.09f);
+    mLateReverb.setmodulationnoise2(0.06f);
+    mLateReverb.setMuteOnChange(false);
+    mLateReverb.setinputdamp(20000.0f);
+    mLateReverb.setoutputdampbw(2.0f);
+    mLateReverb.setReverbType(2u);
+    mLateReverb.setspin2wander(22.0f);
+    mLateReverb.setspinlimit(20.0f);
+    mLateReverb.setspinlimit2(12.0f);
 
     // initialize everything else
     setSampleRate(44100.0f);
@@ -76,10 +76,10 @@ RoomReverb::RoomReverb()
     setLateWander(30.0f);
 }
 
-void RoomReverb::setSampleRate(float newSampleRate)
+void RoomReverb::setSampleRate(float sampleRate)
 {
-    early.setSampleRate(newSampleRate);
-    late.setSampleRate(newSampleRate);
+    mEarlyReflections.setSampleRate(sampleRate);
+    mLateReverb.setSampleRate(sampleRate);
 }
 
 void RoomReverb::process(const float* leftChannelIn,
@@ -87,217 +87,157 @@ void RoomReverb::process(const float* leftChannelIn,
                          float* rightChannelOut, int numSamples)
 {
     // updating these parameters only once per buffer prevents segmention faults
-    if (earlyRoomSizeNeedsUpdate)
+    if (mEarlyRoomSizeNeedsUpdate)
     {
-        early.setRSFactor(earlyRoomSize);
-        earlyRoomSizeNeedsUpdate = false;
+        mEarlyReflections.setRSFactor(mEarlyRoomSize);
+        mEarlyRoomSizeNeedsUpdate = false;
     }
-    if (lateRoomSizeNeedsUpdate)
+    if (mLateRoomSizeNeedsUpdate)
     {
-        late.setRSFactor(lateRoomSize);
-        lateRoomSizeNeedsUpdate = false;
+        mLateReverb.setRSFactor(mLateRoomSize);
+        mLateRoomSizeNeedsUpdate = false;
     }
-    if (latePredelayNeedsUpdate)
+    if (mLatePredelayNeedsUpdate)
     {
-        late.setPreDelay(latePredelay);
-        latePredelayNeedsUpdate = false;
+        mLateReverb.setPreDelay(mLatePredelay);
+        mLatePredelayNeedsUpdate = false;
     }
 
-    // split the buffer into fixed size chunks
-    for (int offset = 0; offset < numSamples; offset += bufferSize)
+    // work on fixed size buffer chunks to be independent of the provided buffer size
+    for (int offset = 0; offset < numSamples; offset += INTERNAL_BUFFER_SIZE)
     {
-        int numSamplesInBuffer = numSamples - offset < bufferSize ? numSamples - offset : bufferSize;
+        int numSamplesInBuffer = numSamples - offset < INTERNAL_BUFFER_SIZE ? numSamples - offset : INTERNAL_BUFFER_SIZE;
 
-        for (int i = 0; i < numSamplesInBuffer; ++i)
+        for (int sample = 0; sample < numSamplesInBuffer; ++sample)
         {
-            leftBufferIn[i] = leftChannelIn[offset + i];
-            rightBufferIn[i] = rightChannelIn[offset + i];
+            mLeftBufferIn[sample] = leftChannelIn[offset + sample];
+            mRightBufferIn[sample] = rightChannelIn[offset + sample];
         }
 
-        early.processreplace(leftBufferIn,
-                             rightBufferIn,
-                             leftEarlyOut,
-                             rightEarlyOut,
-                             numSamplesInBuffer);
+        mEarlyReflections.processreplace(mLeftBufferIn,
+                                         mRightBufferIn,
+                                         mLeftEarlyOut,
+                                         mRightEarlyOut,
+                                         numSamplesInBuffer);
 
-        for (int i = 0; i < numSamplesInBuffer; ++i)
+        for (int sample = 0; sample < numSamplesInBuffer; ++sample)
         {
-            leftLateIn[i] = earlySendLevel * leftEarlyOut[i] + leftBufferIn[i];
-            rightLateIn[i] = earlySendLevel * rightEarlyOut[i] + rightBufferIn[i];
+            mLeftLateIn[sample] = mEarlySendLevel * mLeftEarlyOut[sample] + mLeftBufferIn[sample];
+            mRightLateIn[sample] = mEarlySendLevel * mRightEarlyOut[sample] + mRightBufferIn[sample];
         }
 
-        late.processreplace(leftLateIn,
-                            rightLateIn,
-                            leftLateOut,
-                            rightLateOut,
-                            numSamplesInBuffer);
+        mLateReverb.processreplace(mLeftLateIn,
+                                   mRightLateIn,
+                                   mLeftLateOut,
+                                   mRightLateOut,
+                                   numSamplesInBuffer);
 
-        for (int i = 0; i < numSamplesInBuffer; ++i)
+        for (int sample = 0; sample < numSamplesInBuffer; ++sample)
         {
-            leftChannelOut[offset + i] = dryLevel * leftBufferIn[i] +
-                                         earlyLevel * leftEarlyOut[i] +
-                                         lateLevel * leftLateOut[i];
-            rightChannelOut[offset + i] = dryLevel * rightBufferIn[i] +
-                                          earlyLevel * rightEarlyOut[i] +
-                                          lateLevel * rightLateOut[i];
+            leftChannelOut[offset + sample] = mDryLevel * mLeftBufferIn[sample] +
+                                              mEarlyLevel * mLeftEarlyOut[sample] +
+                                              mLateLevel * mLeftLateOut[sample];
+            rightChannelOut[offset + sample] = mDryLevel * mRightBufferIn[sample] +
+                                               mEarlyLevel * mRightEarlyOut[sample] +
+                                               mLateLevel * mRightLateOut[sample];
         }
     }
 }
 
 void RoomReverb::mute()
 {
-    early.mute();
-    late.mute();
+    mEarlyReflections.mute();
+    mLateReverb.mute();
 }
 
-void RoomReverb::setDryLevel(float newDryLevel)
+void RoomReverb::setDryLevel(float dryLevel)
 {
-    dryLevel = newDryLevel / 100.0f;
+    mDryLevel = dryLevel / 100.0f;
 }
 
-void RoomReverb::setEarlyLevel(float newEarlyLevel)
+void RoomReverb::setEarlyLevel(float earlyLevel)
 {
-    earlyLevel = newEarlyLevel / 100.0f;
+    mEarlyLevel = earlyLevel / 100.0f;
 }
 
-void RoomReverb::setEarlySendLevel(float newEarlySend)
+void RoomReverb::setEarlySendLevel(float earlySend)
 {
-    earlySendLevel = newEarlySend / 100.0f;
+    mEarlySendLevel = earlySend / 100.0f;
 }
 
-void RoomReverb::setLateLevel(float newLateLevel)
+void RoomReverb::setLateLevel(float lateLevel)
 {
-    lateLevel = newLateLevel / 100.0f;
+    mLateLevel = lateLevel / 100.0f;
 }
 
-void RoomReverb::setStereoWidth(float newStereoWidth)
+void RoomReverb::setStereoWidth(float stereoWidth)
 {
     // plugin range: 0 - 100
     // freeverb range: -1.0 - 1.0
     // freeverb range = plugin range / 50.0 - 1.0
-    early.setwidth(newStereoWidth / 50.0f - 1.0f);
-    late.setwidth(newStereoWidth / 50.0f - 1.0f);
+    stereoWidth = stereoWidth / 50.0f - 1.0f;
+    mEarlyReflections.setwidth(stereoWidth);
+    mLateReverb.setwidth(stereoWidth);
 }
 
-void RoomReverb::setEarlyDamping(float newEarlyDamping)
+void RoomReverb::setEarlyDamping(float earlyDamping)
 {
-    early.setoutputlpf(newEarlyDamping);
+    mEarlyReflections.setoutputlpf(earlyDamping);
 }
 
-void RoomReverb::setEarlyRoomSize(float newEarlyRoomSize)
-{
-    // plugin range: 0 - 100
-    // freeverb range: 0.4 - 3.6
-    // freeverb range = plugin range / 31.25 + 0.4
-    earlyRoomSize = newEarlyRoomSize / 31.25f + 0.4f;
-    earlyRoomSizeNeedsUpdate = true;
-}
-
-void RoomReverb::setLateDamping(float newLateDamping)
-{
-    late.setdamp(newLateDamping);
-    late.setoutputdamp(newLateDamping);
-}
-
-void RoomReverb::setLateDiffusion(float newLateDiffusion)
-{
-    // limit values to avoid signal clips
-    late.setidiffusion1(newLateDiffusion / 105.0f);
-    late.setodiffusion1(newLateDiffusion / 105.0f);
-}
-
-void RoomReverb::setLatePredelay(float newLatePredelay)
-{
-    latePredelay = newLatePredelay;
-    latePredelayNeedsUpdate = true;
-}
-
-void RoomReverb::setLateRoomSize(float newLateRoomSize)
+void RoomReverb::setEarlyRoomSize(float earlyRoomSize)
 {
     // plugin range: 0 - 100
     // freeverb range: 0.4 - 3.6
     // freeverb range = plugin range / 31.25 + 0.4
-    lateRoomSize = newLateRoomSize / 31.25f + 0.4f;
-    lateRoomSizeNeedsUpdate = true;
+    mEarlyRoomSize = earlyRoomSize / 31.25f + 0.4f;
+    mEarlyRoomSizeNeedsUpdate = true;
 }
 
-void RoomReverb::setLateDecay(float newLateDecay)
+void RoomReverb::setLateDamping(float lateDamping)
 {
-    late.setrt60(newLateDecay);
+    mLateReverb.setdamp(lateDamping);
+    mLateReverb.setoutputdamp(lateDamping);
 }
 
-void RoomReverb::setLateSpin(float newLateSpin)
-{
-    late.setspin(newLateSpin);
-    late.setspin2(std::sqrt(100.0f - (10.0f - newLateSpin) * (10.0f - newLateSpin)) / 2.0f);
-}
-
-void RoomReverb::setLateWander(float newLateWander)
+void RoomReverb::setLateDiffusion(float lateDiffusion)
 {
     // limit values to avoid signal clips
-    late.setwander(newLateWander / 200.0f + 0.1f);
-    late.setwander2(newLateWander / 200.0f + 0.1f);
+    lateDiffusion = lateDiffusion / 105.0f;
+    mLateReverb.setidiffusion1(lateDiffusion);
+    mLateReverb.setodiffusion1(lateDiffusion);
 }
 
-// void RoomReverb::dumpSettings()
-// {
-//     std::cout << "LEVEL:\n";
-//     std::cout << "dryLevel:" << dryLevel << "\n";
-//     std::cout << "earlyLevel:" << earlyLevel << "\n";
-//     std::cout << "earlySendLevel:" << earlySendLevel << "\n";
-//     std::cout << "lateLevel:" << lateLevel << "\n";
-//     std::cout << "EARLY:\n";
-//     std::cout << "early.getdryr:" << early.getdryr() << "\n";
-//     std::cout << "early.getwetr:" << early.getwetr() << "\n";
-//     std::cout << "early.getCurrentPreset:" << early.getCurrentPreset() << "\n";
-//     std::cout << "early.getDiffusionApFreq:" << early.getDiffusionApFreq() << "\n";
-//     std::cout << "early.getLRCrossApFreq:" << early.getLRCrossApFreq() << "\n";
-//     std::cout << "early.getLRDelay:" << early.getLRDelay() << "\n";
-//     std::cout << "early.getMuteOnChange:" << early.getMuteOnChange() << "\n";
-//     std::cout << "early.getoutputhpf:" << early.getoutputhpf() << "\n";
-//     std::cout << "early.getoutputlpf:" << early.getoutputlpf() << "\n";
-//     std::cout << "early.getPreDelay:" << early.getPreDelay() << "\n";
-//     std::cout << "early.getRSFactor:" << early.getRSFactor() << "\n";
-//     std::cout << "early.getSampleRate:" << early.getSampleRate() << "\n";
-//     std::cout << "early.getwidth:" << early.getwidth() << "\n";
-//     std::cout << "LATE:\n";
-//     std::cout << "late.getdryr:" << late.getdryr() << "\n";
-//     std::cout << "late.getwetr:" << late.getwetr() << "\n";
-//     std::cout << "late.getBassAp:" << late.getbassap() << "\n";
-//     std::cout << "late.getbassboost:" << late.getbassboost() << "\n";
-//     std::cout << "late.getdamp2:" << late.getdamp2() << "\n";
-//     std::cout << "late.getbassbw:" << late.getbassbw() << "\n";
-//     std::cout << "late.getcrossfeed:" << late.getcrossfeed() << "\n";
-//     std::cout << "late.getdamp:" << late.getdamp() << "\n";
-//     std::cout << "late.getdccutfreq:" << late.getdccutfreq() << "\n";
-//     std::cout << "late.getdecay0:" << late.getdecay0() << "\n";
-//     std::cout << "late.getdecay1:" << late.getdecay1() << "\n";
-//     std::cout << "late.getdecay2:" << late.getdecay2() << "\n";
-//     std::cout << "late.getdecay3:" << late.getdecay3() << "\n";
-//     std::cout << "late.getdecayf:" << late.getdecayf() << "\n";
-//     std::cout << "late.getdiffusion1:" << late.getdiffusion1() << "\n";
-//     std::cout << "late.getdiffusion2:" << late.getdiffusion2() << "\n";
-//     std::cout << "late.getdiffusion3:" << late.getdiffusion3() << "\n";
-//     std::cout << "late.getdiffusion4:" << late.getdiffusion4() << "\n";
-//     std::cout << "late.getidiffusion1:" << late.getidiffusion1() << "\n";
-//     std::cout << "late.getodiffusion1:" << late.getodiffusion1() << "\n";
-//     std::cout << "late.getmodulationnoise1:" << late.getmodulationnoise1() << "\n";
-//     std::cout << "late.getmodulationnoise2:" << late.getmodulationnoise2() << "\n";
-//     std::cout << "late.getMuteOnChange:" << late.getMuteOnChange() << "\n";
-//     std::cout << "late.getinputdamp:" << late.getinputdamp() << "\n";
-//     std::cout << "late.getoutputdamp:" << late.getoutputdamp() << "\n";
-//     std::cout << "late.getoutputdampbw:" << late.getoutputdampbw() << "\n";
-//     std::cout << "late.getPreDelay:" << late.getPreDelay() << "\n";
-//     std::cout << "late.getReverbType:" << late.getReverbType() << "\n";
-//     std::cout << "late.getRSFactor:" << late.getRSFactor() << "\n";
-//     std::cout << "late.getrt60:" << late.getrt60() << "\n";
-//     std::cout << "late.getSampleRate:" << late.getSampleRate() << "\n";
-//     std::cout << "late.getspin:" << late.getspin() << "\n";
-//     std::cout << "late.getspin2:" << late.getspin2() << "\n";
-//     std::cout << "late.getspin2wander:" << late.getspin2wander() << "\n";
-//     std::cout << "late.getspinlimit:" << late.getspinlimit() << "\n";
-//     std::cout << "late.getspinlimit2:" << late.getspinlimit2() << "\n";
-//     std::cout << "late.getwander:" << late.getwander() << "\n";
-//     std::cout << "late.getwander2:" << late.getwander2() << "\n";
-//     std::cout << "late.getwidth:" << late.getwidth() << "\n";
-// }
+void RoomReverb::setLatePredelay(float latePredelay)
+{
+    mLatePredelay = latePredelay;
+    mLatePredelayNeedsUpdate = true;
+}
+
+void RoomReverb::setLateRoomSize(float lateRoomSize)
+{
+    // plugin range: 0 - 100
+    // freeverb range: 0.4 - 3.6
+    // freeverb range = plugin range / 31.25 + 0.4
+    mLateRoomSize = lateRoomSize / 31.25f + 0.4f;
+    mLateRoomSizeNeedsUpdate = true;
+}
+
+void RoomReverb::setLateDecay(float lateDecay)
+{
+    mLateReverb.setrt60(lateDecay);
+}
+
+void RoomReverb::setLateSpin(float lateSpin)
+{
+    mLateReverb.setspin(lateSpin);
+    mLateReverb.setspin2(std::sqrt(100.0f - (10.0f - lateSpin) * (10.0f - lateSpin)) / 2.0f);
+}
+
+void RoomReverb::setLateWander(float lateWander)
+{
+    // limit values to avoid signal clips
+    lateWander = lateWander / 200.0f + 0.1f;
+    mLateReverb.setwander(lateWander);
+    mLateReverb.setwander2(lateWander);
+}

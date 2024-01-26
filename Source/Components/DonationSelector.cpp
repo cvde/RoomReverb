@@ -31,17 +31,13 @@ DonationSelector::DonationSelector()
         return;
     }
 
-    donationProducts = juce::Array<DonationProduct>({DonationProduct{"donation05", "Retrieving price..."},
-                                                     DonationProduct{"donation10", "Retrieving price..."},
-                                                     DonationProduct{"donation20", "Retrieving price..."},
-                                                     DonationProduct{"donation50", "Retrieving price..."}});
-
     juce::InAppPurchases::getInstance()->addListener(this);
 
-    juce::StringArray identifiers;
-    for (const auto& donationProduct : donationProducts)
-        identifiers.add(donationProduct.identifier);
-    juce::InAppPurchases::getInstance()->getProductsInformation(identifiers);
+    for (const auto& donationProductIdentifier : mDonationProductIdentifiers)
+    {
+        mDonationProducts.add({donationProductIdentifier, "Retrieving price..."});
+    }
+    juce::InAppPurchases::getInstance()->getProductsInformation(mDonationProductIdentifiers);
 }
 
 DonationSelector::~DonationSelector()
@@ -52,12 +48,14 @@ DonationSelector::~DonationSelector()
 void DonationSelector::productsInfoReturned(const juce::Array<juce::InAppPurchases::Product>& products)
 {
     if (products.isEmpty())
+    {
         return;
+    }
 
     // remove "unavailable" entry
     getRootMenu()->clear();
 
-    for (auto& donationProduct : donationProducts)
+    for (auto& donationProduct : mDonationProducts)
     {
         for (int i = 0; i < products.size(); ++i)
         {

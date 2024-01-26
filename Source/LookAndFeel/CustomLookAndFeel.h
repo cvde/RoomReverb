@@ -54,7 +54,7 @@ public:
                         const juce::String& text, const juce::String& shortcutKeyText,
                         const juce::Drawable* icon, const juce::Colour* textColour) override;
 
-    juce::Rectangle<int> getTooltipBounds (const juce::String& tipText, juce::Point<int> screenPos, juce::Rectangle<int> parentArea);
+    juce::Rectangle<int> getTooltipBounds (const juce::String& tipText, juce::Point<int> screenPos, juce::Rectangle<int> parentArea) override;
     void drawTooltip (juce::Graphics&, const juce::String& text, int width, int height) override;
 
     void fillTextEditorBackground (juce::Graphics&, int width, int height, juce::TextEditor&) override;

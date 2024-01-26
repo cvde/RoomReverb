@@ -28,55 +28,53 @@ class RoomReverb
 public:
     RoomReverb();
 
-    void setSampleRate(float newSampleRate);
+    void setSampleRate(float sampleRate);
     void process(const float* leftChannelIn, const float* rightChannelIn, float* leftChannelOut, float* rightChannelOut, int numSamples);
     void mute();
 
     // output
-    void setDryLevel(float newDryLevel);
-    void setEarlyLevel(float newEarlyLevel);
-    void setEarlySendLevel(float newEarlySend);
-    void setLateLevel(float newLateLevel);
-    void setStereoWidth(float newStereoWidth);
+    void setDryLevel(float dryLevel);
+    void setEarlyLevel(float earlyLevel);
+    void setEarlySendLevel(float earlySend);
+    void setLateLevel(float lateLevel);
+    void setStereoWidth(float stereoWidth);
 
     // early reflections
-    void setEarlyDamping(float newEarlyDamping);
-    void setEarlyRoomSize(float newEarlyRoomSize);
+    void setEarlyDamping(float earlyDamping);
+    void setEarlyRoomSize(float earlyRoomSize);
 
     // late reverb
-    void setLateDamping(float newLateDamping);
-    void setLateDiffusion(float newLateDiffusion);
-    void setLatePredelay(float newLatePredelay);
-    void setLateRoomSize(float newLateRoomSize);
-    void setLateDecay(float newLateDecay);
-    void setLateSpin(float newLateSpin);
-    void setLateWander(float newLateWander);
-
-    // void dumpSettings();
+    void setLateDamping(float lateDamping);
+    void setLateDiffusion(float lateDiffusion);
+    void setLatePredelay(float latePredelay);
+    void setLateRoomSize(float lateRoomSize);
+    void setLateDecay(float lateDecay);
+    void setLateSpin(float lateSpin);
+    void setLateWander(float lateWander);
 
 private:
-    float dryLevel;
-    float earlyLevel;
-    float earlySendLevel;
-    float lateLevel;
+    float mDryLevel;
+    float mEarlyLevel;
+    float mEarlySendLevel;
+    float mLateLevel;
 
-    std::atomic<bool> earlyRoomSizeNeedsUpdate = false;
-    float earlyRoomSize;
-    std::atomic<bool> lateRoomSizeNeedsUpdate = false;
-    float lateRoomSize;
-    std::atomic<bool> latePredelayNeedsUpdate = false;
-    float latePredelay;
+    std::atomic<bool> mEarlyRoomSizeNeedsUpdate{false};
+    float mEarlyRoomSize;
+    std::atomic<bool> mLateRoomSizeNeedsUpdate{false};
+    float mLateRoomSize;
+    std::atomic<bool> mLatePredelayNeedsUpdate{false};
+    float mLatePredelay;
 
-    static constexpr int bufferSize = 512;
-    float leftBufferIn[bufferSize];
-    float rightBufferIn[bufferSize];
-    float leftEarlyOut[bufferSize];
-    float rightEarlyOut[bufferSize];
-    float leftLateIn[bufferSize];
-    float rightLateIn[bufferSize];
-    float leftLateOut[bufferSize];
-    float rightLateOut[bufferSize];
+    static constexpr int INTERNAL_BUFFER_SIZE = 512;
+    float mLeftBufferIn[INTERNAL_BUFFER_SIZE];
+    float mRightBufferIn[INTERNAL_BUFFER_SIZE];
+    float mLeftEarlyOut[INTERNAL_BUFFER_SIZE];
+    float mRightEarlyOut[INTERNAL_BUFFER_SIZE];
+    float mLeftLateIn[INTERNAL_BUFFER_SIZE];
+    float mRightLateIn[INTERNAL_BUFFER_SIZE];
+    float mLeftLateOut[INTERNAL_BUFFER_SIZE];
+    float mRightLateOut[INTERNAL_BUFFER_SIZE];
 
-    fv3::earlyref_f early;
-    fv3::progenitor2_f late;
+    fv3::earlyref_f mEarlyReflections;
+    fv3::progenitor2_f mLateReverb;
 };

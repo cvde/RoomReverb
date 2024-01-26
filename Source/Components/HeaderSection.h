@@ -31,18 +31,18 @@
 class HeaderSection : public juce::Component
 {
 public:
-    HeaderSection(ReverbAudioProcessor& audioProcessor, AboutDialog& aboutDialogComponent);
+    HeaderSection(ReverbAudioProcessor& audioProcessor, AboutDialog& aboutDialog);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
-    LogoComponent logo;
-    UndoComponent undo;
-    PresetComponent preset;
-    ABToggleComponent abToggle;
-    juce::TextButton aboutButton;
-    AboutDialog& aboutDialog;
+    LogoComponent mLogo;
+    UndoComponent mUndo;
+    PresetComponent mPreset;
+    ABToggleComponent mAbToggle;
+    juce::TextButton mAboutButton;
+    AboutDialog& mAboutDialog;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeaderSection)
 };

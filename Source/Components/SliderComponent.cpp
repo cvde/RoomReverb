@@ -26,33 +26,33 @@ SliderComponent::SliderComponent(
     const char* binaryIcon,
     const int binaryIconSize,
     juce::BubbleMessageComponent& bubbleTooltip,
-    const juce::String& parameterInfoText)
-        : parameters(audioProcessor.getParameters()),
-          presetManager(audioProcessor.getPresetManager()),
-          parameterInfoButton(bubbleTooltip, parameterInfoText),
-          parameterSliderAttachment(audioProcessor.getParameters(), parameterID, parameterSlider)
+    const juce::String& infoText)
+        : mParameters(audioProcessor.getParameters()),
+          mPresetManager(audioProcessor.getPresetManager()),
+          mParameterInfoButton(bubbleTooltip, infoText),
+          mParameterSliderAttachment(audioProcessor.getParameters(), parameterID, mParameterSlider)
 {
-    parameterIcon = juce::Drawable::createFromImageData(binaryIcon, (size_t)binaryIconSize);
-    addAndMakeVisible(parameterIcon.get());
+    mParameterIcon = juce::Drawable::createFromImageData(binaryIcon, (size_t)binaryIconSize);
+    addAndMakeVisible(mParameterIcon.get());
 
-    parameterLabel.setText(parameters.getParameter(parameterID)->getName(40), juce::dontSendNotification);
-    parameterLabel.setFont(juce::Font(20.0f));
-    addAndMakeVisible(parameterLabel);
+    mParameterLabel.setText(mParameters.getParameter(parameterID)->getName(40), juce::dontSendNotification);
+    mParameterLabel.setFont(juce::Font(20.0f));
+    addAndMakeVisible(mParameterLabel);
 
-    addAndMakeVisible(parameterInfoButton);
+    addAndMakeVisible(mParameterInfoButton);
 
-    parameterSlider.setTextValueSuffix(parameters.getParameter(parameterID)->getLabel());
-    parameterSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 62, 22);
-    addAndMakeVisible(parameterSlider);
+    mParameterSlider.setTextValueSuffix(mParameters.getParameter(parameterID)->getLabel());
+    mParameterSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 62, 22);
+    addAndMakeVisible(mParameterSlider);
 
-    parameterLockButton.setImages(juce::Drawable::createFromImageData(BinaryData::lock_open_svg, BinaryData::lock_open_svgSize).get(), nullptr, nullptr, nullptr, juce::Drawable::createFromImageData(BinaryData::lock_closed_svg, BinaryData::lock_closed_svgSize).get(), nullptr, nullptr, nullptr);
-    parameterLockButton.setTooltip("Lock this parameter to keep it when selecting another preset.");
-    parameterLockButton.setClickingTogglesState(true);
-    parameterLockButton.setToggleState(presetManager.isParameterLocked(parameterID), juce::dontSendNotification);
-    parameterLockButton.setColour(juce::DrawableButton::ColourIds::backgroundOnColourId, juce::Colours::transparentBlack);
-    parameterLockButton.onClick = [this, parameterID] { parameterLockButton.getToggleState() ? presetManager.lockParameter(parameterID) : presetManager.unlockParameter(parameterID); };
+    mParameterLockButton.setImages(juce::Drawable::createFromImageData(BinaryData::lock_open_svg, BinaryData::lock_open_svgSize).get(), nullptr, nullptr, nullptr, juce::Drawable::createFromImageData(BinaryData::lock_closed_svg, BinaryData::lock_closed_svgSize).get(), nullptr, nullptr, nullptr);
+    mParameterLockButton.setTooltip("Lock this parameter to keep it when selecting another preset.");
+    mParameterLockButton.setClickingTogglesState(true);
+    mParameterLockButton.setToggleState(mPresetManager.isParameterLocked(parameterID), juce::dontSendNotification);
+    mParameterLockButton.setColour(juce::DrawableButton::ColourIds::backgroundOnColourId, juce::Colours::transparentBlack);
+    mParameterLockButton.onClick = [this, parameterID] { mParameterLockButton.getToggleState() ? mPresetManager.lockParameter(parameterID) : mPresetManager.unlockParameter(parameterID); };
 
-    addAndMakeVisible(parameterLockButton);
+    addAndMakeVisible(mParameterLockButton);
 }
 
 void SliderComponent::paint(juce::Graphics& g)
@@ -65,18 +65,17 @@ void SliderComponent::resized()
     auto area = getLocalBounds();
 
     auto parameterIconArea = area.removeFromLeft(area.getHeight() / 2);
-    parameterIcon->setTransformToFit(parameterIconArea.toFloat().reduced(5), juce::RectanglePlacement::centred);
-    parameterIcon->setBounds(parameterIconArea);
+    mParameterIcon->setTransformToFit(parameterIconArea.toFloat().reduced(5), juce::RectanglePlacement::centred);
+    mParameterIcon->setBounds(parameterIconArea);
 
     auto labelAndInfo = area.removeFromTop(area.getHeight() / 2);
     // for some reason the string width calculation is not reliable... therefore + 10
-    const int labelTextWidth = parameterLabel.getFont().getStringWidth(parameterLabel.getText()) + 10;
-    parameterLabel.setBounds(labelAndInfo.removeFromLeft(labelTextWidth));
-    // placing the info button
-    parameterInfoButton.setBounds(labelAndInfo.getX(), labelAndInfo.getCentreY() - 12, 24, 24);
+    const int labelTextWidth = mParameterLabel.getFont().getStringWidth(mParameterLabel.getText()) + 10;
+    mParameterLabel.setBounds(labelAndInfo.removeFromLeft(labelTextWidth));
+    mParameterInfoButton.setBounds(labelAndInfo.getX(), labelAndInfo.getCentreY() - 12, 24, 24);
 
     auto parameterLockButtonSize = area.removeFromRight(30).reduced(3);
-    parameterLockButton.setBounds(parameterLockButtonSize.getX(), parameterLockButtonSize.getCentreY() - 12, 24, 24);
+    mParameterLockButton.setBounds(parameterLockButtonSize.getX(), parameterLockButtonSize.getCentreY() - 12, 24, 24);
 
-    parameterSlider.setBounds(area);
+    mParameterSlider.setBounds(area);
 }

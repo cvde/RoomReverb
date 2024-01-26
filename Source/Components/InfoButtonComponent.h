@@ -25,7 +25,7 @@
 class InfoButtonComponent : public juce::Component
 {
 public:
-    InfoButtonComponent(juce::BubbleMessageComponent& bubbleTooltip, const juce::String& text);
+    InfoButtonComponent(juce::BubbleMessageComponent& bubbleTooltip, const juce::String& intoText);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -33,9 +33,9 @@ public:
 private:
     void showBubbleMessageTooltip();
 
-    juce::DrawableButton infoButton{"infoButton", juce::DrawableButton::ImageFitted};
-    juce::BubbleMessageComponent& bubbleMessageTooltip;
-    juce::AttributedString infoText;
+    juce::DrawableButton mInfoButton{"infoButton", juce::DrawableButton::ImageFitted};
+    juce::BubbleMessageComponent& mBubbleMessageTooltip;
+    juce::AttributedString mInfoText;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InfoButtonComponent)
 };

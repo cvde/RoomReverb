@@ -22,21 +22,21 @@
 
 HeaderSection::HeaderSection(
     ReverbAudioProcessor& audioProcessor,
-    AboutDialog& aboutDialogComponent)
-        : undo(audioProcessor),
-          preset(audioProcessor),
-          abToggle(audioProcessor),
-          aboutDialog(aboutDialogComponent)
+    AboutDialog& aboutDialog)
+        : mUndo(audioProcessor),
+          mPreset(audioProcessor),
+          mAbToggle(audioProcessor),
+          mAboutDialog(aboutDialog)
 {
-    addAndMakeVisible(logo);
-    addAndMakeVisible(undo);
-    addAndMakeVisible(abToggle);
-    addAndMakeVisible(preset);
+    addAndMakeVisible(mLogo);
+    addAndMakeVisible(mUndo);
+    addAndMakeVisible(mAbToggle);
+    addAndMakeVisible(mPreset);
 
-    aboutButton.setButtonText("?");
-    aboutButton.setTooltip("About this plugin.");
-    aboutButton.onClick = [this] { aboutDialog.setVisible(true); };
-    addAndMakeVisible(aboutButton);
+    mAboutButton.setButtonText("?");
+    mAboutButton.setTooltip("About this plugin.");
+    mAboutButton.onClick = [this] { mAboutDialog.setVisible(true); };
+    addAndMakeVisible(mAboutButton);
 }
 
 void HeaderSection::paint(juce::Graphics& g)
@@ -48,15 +48,15 @@ void HeaderSection::paint(juce::Graphics& g)
 void HeaderSection::resized()
 {
     auto area = getLocalBounds().reduced(2);
-    const int logoWidth = (int)(area.getWidth() * 0.34f);
-    const int undoWidth = (int)(area.getWidth() * 0.12f);
-    const int presetWidth = (int)(area.getWidth() * 0.3f);
-    const int abToggleWidth = (int)(area.getWidth() * 0.18f);
-    const int aboutButtonWidth = (int)(area.getWidth() * 0.06f);
+    const int logoWidth = static_cast<int>(area.getWidth() * 0.34f);
+    const int undoWidth = static_cast<int>(area.getWidth() * 0.12f);
+    const int presetWidth = static_cast<int>(area.getWidth() * 0.3f);
+    const int abToggleWidth = static_cast<int>(area.getWidth() * 0.18f);
+    const int aboutButtonWidth = static_cast<int>(area.getWidth() * 0.06f);
 
-    logo.setBounds(area.removeFromLeft(logoWidth).reduced(5));
-    undo.setBounds(area.removeFromLeft(undoWidth).reduced(5));
-    preset.setBounds(area.removeFromLeft(presetWidth).reduced(5));
-    abToggle.setBounds(area.removeFromLeft(abToggleWidth).reduced(5));
-    aboutButton.setBounds(area.removeFromLeft(aboutButtonWidth).reduced(5));
+    mLogo.setBounds(area.removeFromLeft(logoWidth).reduced(5));
+    mUndo.setBounds(area.removeFromLeft(undoWidth).reduced(5));
+    mPreset.setBounds(area.removeFromLeft(presetWidth).reduced(5));
+    mAbToggle.setBounds(area.removeFromLeft(abToggleWidth).reduced(5));
+    mAboutButton.setBounds(area.removeFromLeft(aboutButtonWidth).reduced(5));
 }

@@ -20,38 +20,38 @@
 #include "ABToggleComponent.h"
 
 ABToggleComponent::ABToggleComponent(ReverbAudioProcessor& audioProcessor)
-        : processorABStateManager(audioProcessor.getProcessorABStateManager())
+        : mProcessorABStateManager(audioProcessor.getProcessorABStateManager())
 {
-    aButton.setName("A");
-    aButton.setButtonText("A");
-    aButton.setTooltip("The A/B buttons are useful for comparing two different plugin settings.");
-    aButton.setClickingTogglesState(true);
-    aButton.setRadioGroupId(4711, juce::dontSendNotification);
-    aButton.onClick = [this] { updateToggleState(aButton); };
-    addAndMakeVisible(aButton);
+    mAButton.setName("A");
+    mAButton.setButtonText("A");
+    mAButton.setTooltip("The A/B buttons are useful for comparing two different plugin settings.");
+    mAButton.setClickingTogglesState(true);
+    mAButton.setRadioGroupId(4711, juce::dontSendNotification);
+    mAButton.onClick = [this] { updateToggleState(mAButton); };
+    addAndMakeVisible(mAButton);
 
-    bButton.setName("B");
-    bButton.setButtonText("B");
-    bButton.setTooltip("The A/B buttons are useful for comparing two different plugin settings.");
-    bButton.setClickingTogglesState(true);
-    bButton.setRadioGroupId(4711, juce::dontSendNotification);
-    bButton.onClick = [this] { updateToggleState(bButton); };
-    addAndMakeVisible(bButton);
+    mBButton.setName("B");
+    mBButton.setButtonText("B");
+    mBButton.setTooltip("The A/B buttons are useful for comparing two different plugin settings.");
+    mBButton.setClickingTogglesState(true);
+    mBButton.setRadioGroupId(4711, juce::dontSendNotification);
+    mBButton.onClick = [this] { updateToggleState(mBButton); };
+    addAndMakeVisible(mBButton);
 
     // decide which button is currently active
-    if (processorABStateManager.getCurrentProcessorState() == aButton.getName())
+    if (mProcessorABStateManager.getCurrentProcessorState() == mAButton.getName())
     {
-        aButton.setToggleState(true, juce::dontSendNotification);
+        mAButton.setToggleState(true, juce::dontSendNotification);
     }
     else
     {
-        bButton.setToggleState(true, juce::dontSendNotification);
+        mBButton.setToggleState(true, juce::dontSendNotification);
     }
 
-    copyButton.setButtonText("Copy");
-    copyButton.setTooltip("Copy plugin setting A to plugin setting B or vice versa (depending on which setting is currently active).");
-    copyButton.onClick = [this] { processorABStateManager.copyActiveToInactiveProcessorState(); };
-    addAndMakeVisible(copyButton);
+    mCopyButton.setButtonText("Copy");
+    mCopyButton.setTooltip("Copy plugin setting A to plugin setting B or vice versa (depending on which setting is currently active).");
+    mCopyButton.onClick = [this] { mProcessorABStateManager.copyActiveToInactiveProcessorState(); };
+    addAndMakeVisible(mCopyButton);
 }
 
 void ABToggleComponent::paint(juce::Graphics& g)
@@ -64,17 +64,17 @@ void ABToggleComponent::resized()
     auto area = getLocalBounds();
     const int elementWidth = area.getWidth() / 3;
 
-    aButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
-    bButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
-    copyButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
+    mAButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
+    mBButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
+    mCopyButton.setBounds(area.removeFromLeft(elementWidth).reduced(1));
 }
 
 void ABToggleComponent::updateToggleState(const juce::Button& clickedButton)
 {
     // process clicks only if the state of the buttons has really changed
     if (clickedButton.getToggleState() &&
-        clickedButton.getName() != processorABStateManager.getCurrentProcessorState().toString())
+        clickedButton.getName() != mProcessorABStateManager.getCurrentProcessorState().toString())
     {
-        processorABStateManager.switchProcessorState();
+        mProcessorABStateManager.switchProcessorState();
     }
 }

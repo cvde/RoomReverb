@@ -20,38 +20,38 @@
 #include "PresetComponent.h"
 
 PresetComponent::PresetComponent(ReverbAudioProcessor& audioProcessor)
-        : parameters(audioProcessor.getParameters()),
-          presetManager(audioProcessor.getPresetManager())
+        : mParameters(audioProcessor.getParameters()),
+          mPresetManager(audioProcessor.getPresetManager())
 {
     // add default preset (index is 0) to the combobox
-    presetSelector.addItem(presetManager.getPresetName(0), 1);
+    mPresetSelector.addItem(mPresetManager.getPresetName(0), 1);
     // add other presets (index > 0) to their category
-    for (int i = 1; i < presetManager.getNumPresets(); ++i)
+    for (int i = 1; i < mPresetManager.getNumPresets(); ++i)
     {
-        if (presetCategorySubmenus.empty() || presetManager.getPresetCategory(i) != presetCategorySubmenus.back().name)
+        if (mPresetCategorySubmenus.empty() || mPresetManager.getPresetCategory(i) != mPresetCategorySubmenus.back().name)
         {
-            presetCategorySubmenus.push_back({presetManager.getPresetCategory(i), juce::PopupMenu()});
+            mPresetCategorySubmenus.push_back({mPresetManager.getPresetCategory(i), juce::PopupMenu()});
         }
-        presetCategorySubmenus.back().popupMenu.addItem(i + 1, presetManager.getPresetName(i));
+        mPresetCategorySubmenus.back().popupMenu.addItem(i + 1, mPresetManager.getPresetName(i));
     }
     // add submenus to the combobox
-    for (const auto& submenu : presetCategorySubmenus)
+    for (const auto& submenu : mPresetCategorySubmenus)
     {
-        presetSelector.getRootMenu()->addSubMenu(submenu.name, submenu.popupMenu);
+        mPresetSelector.getRootMenu()->addSubMenu(submenu.name, submenu.popupMenu);
     }
-    presetSelector.setTooltip("Select a preset (overrides your current plugin settings).");
-    presetSelector.setJustificationType(juce::Justification::centred);
-    const int comboBoxPresetId = presetManager.getCurrentPreset() + 1;
-    presetSelector.setSelectedId(comboBoxPresetId, juce::dontSendNotification);
-    presetSelector.onChange = [this] { loadNewPreset(); };
-    addAndMakeVisible(presetSelector);
+    mPresetSelector.setTooltip("Select a preset (overrides your current plugin settings).");
+    mPresetSelector.setJustificationType(juce::Justification::centred);
+    const int comboBoxPresetId = mPresetManager.getCurrentPreset() + 1;
+    mPresetSelector.setSelectedId(comboBoxPresetId, juce::dontSendNotification);
+    mPresetSelector.onChange = [this] { loadNewPreset(); };
+    addAndMakeVisible(mPresetSelector);
 
-    parameters.state.addListener(this);
+    mParameters.state.addListener(this);
 }
 
 PresetComponent::~PresetComponent()
 {
-    parameters.state.removeListener(this);
+    mParameters.state.removeListener(this);
 }
 
 void PresetComponent::paint(juce::Graphics& g)
@@ -63,13 +63,13 @@ void PresetComponent::resized()
 {
     auto area = getLocalBounds();
 
-    presetSelector.setBounds(area);
+    mPresetSelector.setBounds(area);
 }
 
 void PresetComponent::loadNewPreset()
 {
-    const int valueTreePresetId = presetSelector.getSelectedId() - 1;
-    presetManager.setCurrentPreset(valueTreePresetId);
+    const int valueTreePresetId = mPresetSelector.getSelectedId() - 1;
+    mPresetManager.setCurrentPreset(valueTreePresetId);
 }
 
 void PresetComponent::valueTreePropertyChanged(
@@ -79,7 +79,7 @@ void PresetComponent::valueTreePropertyChanged(
     juce::ignoreUnused(treeWhosePropertyHasChanged);
     if (property.toString() == "GuiNeedsUpdate")
     {
-        const int comboBoxPresetId = presetManager.getCurrentPreset() + 1;
-        presetSelector.setSelectedId(comboBoxPresetId, juce::dontSendNotification);
+        const int comboBoxPresetId = mPresetManager.getCurrentPreset() + 1;
+        mPresetSelector.setSelectedId(comboBoxPresetId, juce::dontSendNotification);
     }
 }

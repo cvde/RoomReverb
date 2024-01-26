@@ -21,33 +21,33 @@
 #include <BinaryData.h>
 
 LateSection::LateSection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessageComponent& bubbleTooltip)
-        : sectionInfoButton(bubbleTooltip, "Late reverberation is produced by the sound bouncing around the room several times, creating a very high density of echoes before returning to the listener's ear."),
-          lateDamping(audioProcessor, "lateDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize, bubbleTooltip,
-                      "Damping determines the frequency at which the higher frequencies of the late reverberation are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
-          lateDiffusion(audioProcessor, "lateDiffusion", BinaryData::parameter_diffusion_svg, BinaryData::parameter_diffusion_svgSize, bubbleTooltip,
-                        "Diffusion determines the dispersion of the late reverberation. Higher values produce more dispersion and sound smoother."),
-          latePredelay(audioProcessor, "latePredelay", BinaryData::parameter_predelay_svg, BinaryData::parameter_predelay_svgSize, bubbleTooltip,
-                       "Predelay determines the time between the dry signal and the beginning of the late reverberation. Higher values increase the time and make the virtual room appear larger."),
-          lateRoomSize(audioProcessor, "lateRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize, bubbleTooltip,
-                       "Room Size determines the size of the virtual room in which the late reverberation appears. Higher values give the impression of a larger room."),
-          lateDecay(audioProcessor, "lateDecay", BinaryData::parameter_decay_svg, BinaryData::parameter_decay_svgSize, bubbleTooltip,
-                    "Decay is the time needed for the late reverberation to fade away. Higher values increase the time and make the virtual room appear larger."),
-          lateSpin(audioProcessor, "lateSpin", BinaryData::parameter_spin_svg, BinaryData::parameter_spin_svgSize, bubbleTooltip,
-                   "Spin determines the modulation rate of the late reverberation. Higher values produce more movement within the late reverberation."),
-          lateWander(audioProcessor, "lateWander", BinaryData::parameter_wander_svg, BinaryData::parameter_wander_svgSize, bubbleTooltip,
-                     "Wander determines the strength of the late reverberation modulation. Higher values make the movement more audible.")
+        : mSectionInfoButton(bubbleTooltip, "Late reverberation is produced by the sound bouncing around the room several times, creating a very high density of echoes before returning to the listener's ear."),
+          mLateDamping(audioProcessor, "lateDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize, bubbleTooltip,
+                       "Damping determines the frequency at which the higher frequencies of the late reverberation are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
+          mLateDiffusion(audioProcessor, "lateDiffusion", BinaryData::parameter_diffusion_svg, BinaryData::parameter_diffusion_svgSize, bubbleTooltip,
+                         "Diffusion determines the dispersion of the late reverberation. Higher values produce more dispersion and sound smoother."),
+          mLatePredelay(audioProcessor, "latePredelay", BinaryData::parameter_predelay_svg, BinaryData::parameter_predelay_svgSize, bubbleTooltip,
+                        "Predelay determines the time between the dry signal and the beginning of the late reverberation. Higher values increase the time and make the virtual room appear larger."),
+          mLateRoomSize(audioProcessor, "lateRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize, bubbleTooltip,
+                        "Room Size determines the size of the virtual room in which the late reverberation appears. Higher values give the impression of a larger room."),
+          mLateDecay(audioProcessor, "lateDecay", BinaryData::parameter_decay_svg, BinaryData::parameter_decay_svgSize, bubbleTooltip,
+                     "Decay is the time needed for the late reverberation to fade away. Higher values increase the time and make the virtual room appear larger."),
+          mLateSpin(audioProcessor, "lateSpin", BinaryData::parameter_spin_svg, BinaryData::parameter_spin_svgSize, bubbleTooltip,
+                    "Spin determines the modulation rate of the late reverberation. Higher values produce more movement within the late reverberation."),
+          mLateWander(audioProcessor, "lateWander", BinaryData::parameter_wander_svg, BinaryData::parameter_wander_svgSize, bubbleTooltip,
+                      "Wander determines the strength of the late reverberation modulation. Higher values make the movement more audible.")
 {
-    sectionTitle.setText("Late Reverb", juce::dontSendNotification);
-    sectionTitle.setFont(juce::Font(26.0f));
-    addAndMakeVisible(sectionTitle);
-    addAndMakeVisible(sectionInfoButton);
-    addAndMakeVisible(lateDamping);
-    addAndMakeVisible(lateDiffusion);
-    addAndMakeVisible(latePredelay);
-    addAndMakeVisible(lateRoomSize);
-    addAndMakeVisible(lateDecay);
-    addAndMakeVisible(lateSpin);
-    addAndMakeVisible(lateWander);
+    mSectionTitle.setText("Late Reverb", juce::dontSendNotification);
+    mSectionTitle.setFont(juce::Font(26.0f));
+    addAndMakeVisible(mSectionTitle);
+    addAndMakeVisible(mSectionInfoButton);
+    addAndMakeVisible(mLateDamping);
+    addAndMakeVisible(mLateDiffusion);
+    addAndMakeVisible(mLatePredelay);
+    addAndMakeVisible(mLateRoomSize);
+    addAndMakeVisible(mLateDecay);
+    addAndMakeVisible(mLateSpin);
+    addAndMakeVisible(mLateWander);
 }
 
 void LateSection::paint(juce::Graphics& g)
@@ -63,16 +63,15 @@ void LateSection::resized()
 
     auto sectionTitleAndInfo = area.removeFromTop(elementHeight);
     // for some reason the string width calculation is not reliable... therefore + 10
-    const int sectionTitleTextWidth = sectionTitle.getFont().getStringWidth(sectionTitle.getText()) + 10;
-    sectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
-    // placing the info button
-    sectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
+    const int sectionTitleTextWidth = mSectionTitle.getFont().getStringWidth(mSectionTitle.getText()) + 10;
+    mSectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
+    mSectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
 
-    lateRoomSize.setBounds(area.removeFromTop(elementHeight));
-    lateDecay.setBounds(area.removeFromTop(elementHeight));
-    latePredelay.setBounds(area.removeFromTop(elementHeight));
-    lateDamping.setBounds(area.removeFromTop(elementHeight));
-    lateDiffusion.setBounds(area.removeFromTop(elementHeight));
-    lateSpin.setBounds(area.removeFromTop(elementHeight));
-    lateWander.setBounds(area.removeFromTop(elementHeight));
+    mLateRoomSize.setBounds(area.removeFromTop(elementHeight));
+    mLateDecay.setBounds(area.removeFromTop(elementHeight));
+    mLatePredelay.setBounds(area.removeFromTop(elementHeight));
+    mLateDamping.setBounds(area.removeFromTop(elementHeight));
+    mLateDiffusion.setBounds(area.removeFromTop(elementHeight));
+    mLateSpin.setBounds(area.removeFromTop(elementHeight));
+    mLateWander.setBounds(area.removeFromTop(elementHeight));
 }

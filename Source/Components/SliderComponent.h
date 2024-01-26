@@ -34,20 +34,20 @@ public:
         const char* binaryIcon,
         const int binaryIconSize,
         juce::BubbleMessageComponent& bubbleTooltip,
-        const juce::String& parameterInfoText);
+        const juce::String& infoText);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
-    juce::AudioProcessorValueTreeState& parameters;
-    PresetManager& presetManager;
-    std::unique_ptr<juce::Drawable> parameterIcon;
-    juce::Label parameterLabel;
-    InfoButtonComponent parameterInfoButton;
-    juce::Slider parameterSlider;
-    juce::DrawableButton parameterLockButton{"parameterLockButton", juce::DrawableButton::ImageFitted};
-    juce::AudioProcessorValueTreeState::SliderAttachment parameterSliderAttachment;
+    juce::AudioProcessorValueTreeState& mParameters;
+    PresetManager& mPresetManager;
+    std::unique_ptr<juce::Drawable> mParameterIcon;
+    juce::Label mParameterLabel;
+    InfoButtonComponent mParameterInfoButton;
+    juce::Slider mParameterSlider;
+    juce::DrawableButton mParameterLockButton{"parameterLockButton", juce::DrawableButton::ImageFitted};
+    juce::AudioProcessorValueTreeState::SliderAttachment mParameterSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SliderComponent)
 };

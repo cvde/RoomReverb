@@ -21,18 +21,18 @@
 #include <BinaryData.h>
 
 EarlySection::EarlySection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessageComponent& bubbleTooltip)
-        : sectionInfoButton(bubbleTooltip, "Early reflections are produced by the dry signal bouncing off a wall and directly returning to the listener's ear."),
-          earlyDamping(audioProcessor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize, bubbleTooltip,
-                       "Damping determines the frequency at which higher frequencies of the early reflections are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
-          earlyRoomSize(audioProcessor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize, bubbleTooltip,
-                        "Room Size determines the size of the virtual room in which the early reflections appear. Higher values give the impression of a larger room.")
+        : mSectionInfoButton(bubbleTooltip, "Early reflections are produced by the dry signal bouncing off a wall and directly returning to the listener's ear."),
+          mEarlyDamping(audioProcessor, "earlyDamping", BinaryData::parameter_damping_svg, BinaryData::parameter_damping_svgSize, bubbleTooltip,
+                        "Damping determines the frequency at which higher frequencies of the early reflections are cut off. Higher values produce a brighter sound. Lower values produce a darker sound."),
+          mEarlyRoomSize(audioProcessor, "earlyRoomSize", BinaryData::parameter_room_size_svg, BinaryData::parameter_room_size_svgSize, bubbleTooltip,
+                         "Room Size determines the size of the virtual room in which the early reflections appear. Higher values give the impression of a larger room.")
 {
-    sectionTitle.setText("Early Reflections", juce::dontSendNotification);
-    sectionTitle.setFont(juce::Font(26.0f));
-    addAndMakeVisible(sectionTitle);
-    addAndMakeVisible(sectionInfoButton);
-    addAndMakeVisible(earlyDamping);
-    addAndMakeVisible(earlyRoomSize);
+    mSectionTitle.setText("Early Reflections", juce::dontSendNotification);
+    mSectionTitle.setFont(juce::Font(26.0f));
+    addAndMakeVisible(mSectionTitle);
+    addAndMakeVisible(mSectionInfoButton);
+    addAndMakeVisible(mEarlyDamping);
+    addAndMakeVisible(mEarlyRoomSize);
 }
 
 void EarlySection::paint(juce::Graphics& g)
@@ -48,11 +48,10 @@ void EarlySection::resized()
 
     auto sectionTitleAndInfo = area.removeFromTop(elementHeight);
     // for some reason the string width calculation is not reliable... therefore + 10
-    const int sectionTitleTextWidth = sectionTitle.getFont().getStringWidth(sectionTitle.getText()) + 10;
-    sectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
-    // placing the info button
-    sectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
+    const int sectionTitleTextWidth = mSectionTitle.getFont().getStringWidth(mSectionTitle.getText()) + 10;
+    mSectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
+    mSectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
 
-    earlyRoomSize.setBounds(area.removeFromTop(elementHeight));
-    earlyDamping.setBounds(area.removeFromTop(elementHeight));
+    mEarlyRoomSize.setBounds(area.removeFromTop(elementHeight));
+    mEarlyDamping.setBounds(area.removeFromTop(elementHeight));
 }

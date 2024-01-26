@@ -28,12 +28,6 @@
 class PresetComponent : public juce::Component, public juce::ValueTree::Listener
 {
 public:
-    struct PresetCategorySubmenu
-    {
-        juce::String name;
-        juce::PopupMenu popupMenu;
-    };
-
     PresetComponent(ReverbAudioProcessor& audioProcessor);
     ~PresetComponent() override;
 
@@ -44,10 +38,16 @@ public:
 
 private:
     void loadNewPreset();
-    juce::AudioProcessorValueTreeState& parameters;
-    PresetManager& presetManager;
-    std::vector<PresetCategorySubmenu> presetCategorySubmenus;
-    juce::ComboBox presetSelector;
+    juce::AudioProcessorValueTreeState& mParameters;
+    PresetManager& mPresetManager;
+
+    struct PresetCategorySubmenu
+    {
+        juce::String name;
+        juce::PopupMenu popupMenu;
+    };
+    std::vector<PresetCategorySubmenu> mPresetCategorySubmenus;
+    juce::ComboBox mPresetSelector;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetComponent)
 };

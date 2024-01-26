@@ -35,14 +35,14 @@ public:
     void resized() override;
 
 private:
-    CustomLookAndFeel customLookAndFeel;
-    juce::ValueTree& applicationState;
-    Main main;
+    CustomLookAndFeel mCustomLookAndFeel;
+    juce::ValueTree& mApplicationState;
+    Main mMainView;
 
-    const int idealWidth = 1024;
-    const int idealHeight = 768;
-    const int minWidth = 800;
-    const int minHeight = 600;
+    static constexpr int IDEAL_WIDTH = 1024;
+    static constexpr int IDEAL_HEIGHT = 768;
+    static constexpr int MIN_WIDTH = 800;
+    static constexpr int MIN_HEIGHT = 600;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbAudioProcessorEditor)
 };

@@ -20,20 +20,20 @@
 #include "Main.h"
 
 Main::Main(ReverbAudioProcessor& audioProcessor)
-        : headerSection(audioProcessor, aboutDialog),
-          outputSection(audioProcessor, bubbleTooltip),
-          earlySection(audioProcessor, bubbleTooltip),
-          lateSection(audioProcessor, bubbleTooltip)
+        : mHeaderSection(audioProcessor, mAboutDialog),
+          mOutputSection(audioProcessor, mBubbleTooltip),
+          mEarlySection(audioProcessor, mBubbleTooltip),
+          mLateSection(audioProcessor, mBubbleTooltip)
 {
     // background of tooltips (rounded corners) should be transparent
-    tooltipWindow.setOpaque(false);
+    mTooltipWindow.setOpaque(false);
 
-    addAndMakeVisible(headerSection);
-    addAndMakeVisible(outputSection);
-    addAndMakeVisible(earlySection);
-    addAndMakeVisible(lateSection);
-    addChildComponent(aboutDialog); // initially not visible
-    addChildComponent(bubbleTooltip);
+    addAndMakeVisible(mHeaderSection);
+    addAndMakeVisible(mOutputSection);
+    addAndMakeVisible(mEarlySection);
+    addAndMakeVisible(mLateSection);
+    addChildComponent(mAboutDialog); // initially not visible
+    addChildComponent(mBubbleTooltip);
 }
 
 void Main::paint(juce::Graphics& g)
@@ -45,17 +45,17 @@ void Main::resized()
 {
     auto area = getLocalBounds().reduced(2);
 
-    const int aboutDialogHeight = (int)(area.getHeight() * 0.75f);
+    const int aboutDialogHeight = static_cast<int>(area.getHeight() * 0.75f);
     const int aboutDialogWidth = area.getWidth() / 2;
-    aboutDialog.setBounds(area.getCentreX() - aboutDialogWidth / 2, area.getCentreY() - aboutDialogHeight / 2, aboutDialogWidth, aboutDialogHeight);
+    mAboutDialog.setBounds(area.getCentreX() - aboutDialogWidth / 2, area.getCentreY() - aboutDialogHeight / 2, aboutDialogWidth, aboutDialogHeight);
 
     const int headerSectionHeight = juce::jlimit(50, 60, (area.getHeight() / 15));
-    headerSection.setBounds(area.removeFromTop(headerSectionHeight));
+    mHeaderSection.setBounds(area.removeFromTop(headerSectionHeight));
 
     const int mainContentHeight = area.getHeight();
     auto leftColumn = area.removeFromLeft(area.getWidth() / 2);
-    outputSection.setBounds(leftColumn.removeFromTop(mainContentHeight * 2 / 3));
-    earlySection.setBounds(leftColumn);
+    mOutputSection.setBounds(leftColumn.removeFromTop(mainContentHeight * 2 / 3));
+    mEarlySection.setBounds(leftColumn);
 
-    lateSection.setBounds(area);
+    mLateSection.setBounds(area);
 }

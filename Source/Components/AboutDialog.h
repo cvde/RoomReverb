@@ -27,20 +27,20 @@ class AboutDialog : public juce::Component
 public:
     AboutDialog();
 
-    void paint(juce::Graphics&) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
-    juce::ShapeButton closeButton{"Close", juce::Colours::white, juce::Colours::white.withAlpha(0.2f), juce::Colours::white.withAlpha(0.4f)};
-    std::unique_ptr<juce::Drawable> logo;
-    juce::Rectangle<float> logoBounds;
-    juce::Label pluginInfo;
-    std::unique_ptr<juce::Component> donateCTA;
-    juce::Label versionInfo;
-    std::unique_ptr<juce::Drawable> vstLogo;
-    juce::Rectangle<float> vstLogoBounds;
+    juce::ShapeButton mCloseButton{"Close", juce::Colours::white, juce::Colours::white.withAlpha(0.2f), juce::Colours::white.withAlpha(0.4f)};
+    std::unique_ptr<juce::Drawable> mLogo;
+    juce::Rectangle<float> mLogoBounds;
+    juce::Label mPluginInfo;
+    std::unique_ptr<juce::Component> mDonateCTA;
+    juce::Label mVersionInfo;
+    std::unique_ptr<juce::Drawable> mVstLogo;
+    juce::Rectangle<float> mVstLogoBounds;
 
-    juce::PluginHostType pluginHostType;
+    juce::PluginHostType mPluginHostType;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AboutDialog)
 };

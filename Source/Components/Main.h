@@ -35,16 +35,16 @@ public:
     void resized() override;
 
 private:
-    HeaderSection headerSection;
-    OutputSection outputSection;
-    EarlySection earlySection;
-    LateSection lateSection;
-    AboutDialog aboutDialog;
+    HeaderSection mHeaderSection;
+    OutputSection mOutputSection;
+    EarlySection mEarlySection;
+    LateSection mLateSection;
+    AboutDialog mAboutDialog;
 
     // make tooltips visible
-    juce::TooltipWindow tooltipWindow{this, 300};
+    juce::TooltipWindow mTooltipWindow{this, 300};
 
-    juce::BubbleMessageComponent bubbleTooltip;
+    juce::BubbleMessageComponent mBubbleTooltip;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Main)
 };

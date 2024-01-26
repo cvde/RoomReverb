@@ -24,7 +24,7 @@
 class ProcessorABStateManager
 {
 public:
-    ProcessorABStateManager(juce::AudioProcessorValueTreeState& parameterTree, juce::ValueTree& appStateTree);
+    ProcessorABStateManager(juce::AudioProcessorValueTreeState& parameters, juce::ValueTree& applicationState);
 
     const juce::var& getCurrentProcessorState() const;
     void switchProcessorState();
@@ -34,9 +34,9 @@ public:
     void setInactiveProcessorState(const juce::ValueTree& newState);
 
 private:
-    juce::AudioProcessorValueTreeState& parameters;
-    juce::ValueTree& applicationState;
-    juce::ValueTree inactiveParameters;
+    juce::AudioProcessorValueTreeState& mParameters;
+    juce::ValueTree& mApplicationState;
+    juce::ValueTree mInactiveParameters;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorABStateManager)
 };

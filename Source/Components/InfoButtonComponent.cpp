@@ -20,19 +20,19 @@
 #include "InfoButtonComponent.h"
 #include <BinaryData.h>
 
-InfoButtonComponent::InfoButtonComponent(juce::BubbleMessageComponent& bubbleTooltip, const juce::String& text)
-        : bubbleMessageTooltip(bubbleTooltip),
-          infoText(text)
+InfoButtonComponent::InfoButtonComponent(juce::BubbleMessageComponent& bubbleTooltip, const juce::String& intoText)
+        : mBubbleMessageTooltip(bubbleTooltip),
+          mInfoText(intoText)
 {
-    infoText.setColour(findColour(juce::DocumentWindow::textColourId));
-    infoText.setFont(juce::Font(20, juce::Font::bold));
-    
-    infoButton.setImages(juce::Drawable::createFromImageData(BinaryData::info_svg, BinaryData::info_svgSize).get());
-    infoButton.setTooltip(infoText.getText());
+    mInfoText.setColour(findColour(juce::DocumentWindow::textColourId));
+    mInfoText.setFont(juce::Font(20, juce::Font::bold));
+
+    mInfoButton.setImages(juce::Drawable::createFromImageData(BinaryData::info_svg, BinaryData::info_svgSize).get());
+    mInfoButton.setTooltip(mInfoText.getText());
 #if JUCE_IOS // tooltips don't work on touch screens -> show a bubble message instead
-    infoButton.onClick = [this] { showBubbleMessageTooltip(); };
+    mInfoButton.onClick = [this] { showBubbleMessageTooltip(); };
 #endif
-    addAndMakeVisible(infoButton);
+    addAndMakeVisible(mInfoButton);
 }
 
 void InfoButtonComponent::paint(juce::Graphics& g)
@@ -42,10 +42,10 @@ void InfoButtonComponent::paint(juce::Graphics& g)
 
 void InfoButtonComponent::resized()
 {
-    infoButton.setBounds(getLocalBounds());
+    mInfoButton.setBounds(getLocalBounds());
 }
 
 void InfoButtonComponent::showBubbleMessageTooltip()
 {
-    bubbleMessageTooltip.showAt(&infoButton, infoText, 4000);
+    mBubbleMessageTooltip.showAt(&mInfoButton, mInfoText, 4000);
 }

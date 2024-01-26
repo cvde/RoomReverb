@@ -24,42 +24,44 @@
 
 AboutDialog::AboutDialog()
 {
-    closeButton.setShape(getLookAndFeel().getCrossShape(1.0f), false, true, false);
-    closeButton.onClick = [this] { setVisible(false); };
-    addAndMakeVisible(closeButton);
+    mCloseButton.setShape(getLookAndFeel().getCrossShape(1.0f), false, true, false);
+    mCloseButton.onClick = [this] { setVisible(false); };
+    addAndMakeVisible(mCloseButton);
 
-    logo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
+    mLogo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
 
     const juce::String pluginInfoText = juce::String("Room Reverb is free software distributed under the GNU General Public License version 3. For more information, contact options, and the source code, visit www.ElephantDSP.com\n\n")
                                         + "If you like this audio plugin, please consider donating a few spare coins. Thank you very much! :)";
-    pluginInfo.setText(pluginInfoText, juce::dontSendNotification);
-    pluginInfo.setFont(juce::Font(22.0f));
-    pluginInfo.setJustificationType(juce::Justification::centred);
-    addAndMakeVisible(pluginInfo);
+    mPluginInfo.setText(pluginInfoText, juce::dontSendNotification);
+    mPluginInfo.setFont(juce::Font(22.0f));
+    mPluginInfo.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(mPluginInfo);
 
 #if JUCE_IOS
-    donateCTA = std::make_unique<DonationSelector>();
+    mDonateCTA = std::make_unique<DonationSelector>();
 #else
-    donateCTA = std::make_unique<juce::HyperlinkButton>();
-    juce::HyperlinkButton* donateButton = static_cast<juce::HyperlinkButton*>(donateCTA.get());
-    donateButton->setButtonText("Donate with PayPal");
+    mDonateCTA = std::make_unique<juce::HyperlinkButton>();
+    juce::HyperlinkButton* donateButton = static_cast<juce::HyperlinkButton*>(mDonateCTA.get());
+    donateButton->setButtonText("Donate via PayPal");
     donateButton->setFont(juce::Font(22.0f, juce::Font::underlined), false, juce::Justification::centred);
     donateButton->setURL(juce::URL("https://www.paypal.com/donate/?hosted_button_id=Z3RSDGUEPVY52"));
     donateButton->setTooltip("");
 #endif
-    addAndMakeVisible(donateCTA.get());
+    addAndMakeVisible(mDonateCTA.get());
 
-    const juce::String versionInfoText = "Version: " + juce::String(PROJECT_VERSION) + "\n" +
-                                         "Format: " + juce::String(juce::AudioProcessor::getWrapperTypeDescription(pluginHostType.getPluginLoadedAs())) + "\n" +
-                                         "Host: " + juce::String(pluginHostType.getHostDescription()) + "\n" +
+    const juce::String versionInfoText = "Version: " + juce::String(PROJECT_VERSION) + " (" + juce::String(PROJECT_BUILD_TYPE) + ")\n" +
+                                         "Format: " + juce::String(juce::AudioProcessor::getWrapperTypeDescription(mPluginHostType.getPluginLoadedAs())) + "\n" +
+                                         "Host: " + juce::String(mPluginHostType.getHostDescription()) + "\n" +
                                          "OS: " + juce::SystemStats::getOperatingSystemName();
-    versionInfo.setText(versionInfoText, juce::dontSendNotification);
-    versionInfo.setFont(juce::Font(18.0f));
-    versionInfo.setJustificationType(juce::Justification::centred);
-    addAndMakeVisible(versionInfo);
+    mVersionInfo.setText(versionInfoText, juce::dontSendNotification);
+    mVersionInfo.setFont(juce::Font(18.0f));
+    mVersionInfo.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(mVersionInfo);
 
-    if (pluginHostType.getPluginLoadedAs() == juce::AudioProcessor::wrapperType_VST3)
-        vstLogo = juce::Drawable::createFromImageData(BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svg, BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svgSize);
+    if (mPluginHostType.getPluginLoadedAs() == juce::AudioProcessor::wrapperType_VST3)
+    {
+        mVstLogo = juce::Drawable::createFromImageData(BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svg, BinaryData::VST_Compatible_Logo_Steinberg_with_TM_negative_svgSize);
+    }
 
     setAlwaysOnTop(true);
 }
@@ -74,11 +76,15 @@ void AboutDialog::paint(juce::Graphics& g)
     g.setColour(juce::Colour(0xffc6c6c6));
     g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
 
-    if (vstLogo != nullptr)
-        vstLogo->drawWithin(g, vstLogoBounds, juce::RectanglePlacement::centred, 1.0);
+    if (mVstLogo != nullptr)
+    {
+        mVstLogo->drawWithin(g, mVstLogoBounds, juce::RectanglePlacement::centred, 1.0);
+    }
 
-    if (logo != nullptr)
-        logo->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0);
+    if (mLogo != nullptr)
+    {
+        mLogo->drawWithin(g, mLogoBounds, juce::RectanglePlacement::centred, 1.0);
+    }
 }
 
 void AboutDialog::resized()
@@ -88,19 +94,21 @@ void AboutDialog::resized()
     // header
     const int titleBarHeight = 40;
     auto titleBar = area.removeFromTop(titleBarHeight);
-    closeButton.setBounds(titleBar.removeFromRight(titleBarHeight).reduced(10));
-    if (logo != nullptr)
-        logoBounds = area.removeFromTop(40).reduced(5).toFloat();
+    mCloseButton.setBounds(titleBar.removeFromRight(titleBarHeight).reduced(10));
+    if (mLogo != nullptr)
+    {
+        mLogoBounds = area.removeFromTop(40).reduced(5).toFloat();
+    }
 
     // footer
     auto footer = area.removeFromBottom(150);
-    if (vstLogo != nullptr)
+    if (mVstLogo != nullptr)
     {
-        vstLogoBounds = footer.removeFromRight(footer.getWidth() / 2).reduced(10).toFloat();
+        mVstLogoBounds = footer.removeFromRight(footer.getWidth() / 2).reduced(10).toFloat();
     }
-    versionInfo.setBounds(footer.reduced(10));
+    mVersionInfo.setBounds(footer.reduced(10));
 
     // content
-    pluginInfo.setBounds(area.removeFromTop(180));
-    donateCTA->setBounds(area.removeFromTop(50).withSizeKeepingCentre(350, 50));
+    mPluginInfo.setBounds(area.removeFromTop(180));
+    mDonateCTA->setBounds(area.removeFromTop(50).withSizeKeepingCentre(350, 50));
 }

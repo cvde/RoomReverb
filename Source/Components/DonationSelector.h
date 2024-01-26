@@ -26,12 +26,6 @@ class DonationSelector : public juce::ComboBox,
                          private juce::InAppPurchases::Listener
 {
 public:
-    struct DonationProduct
-    {
-        juce::String identifier;
-        juce::String purchasePrice;
-    };
-
     DonationSelector();
     ~DonationSelector() override;
 
@@ -39,7 +33,13 @@ private:
     void productsInfoReturned(const juce::Array<juce::InAppPurchases::Product>& products) override;
     void purchase(const juce::String& identifier);
 
-    juce::Array<DonationProduct> donationProducts;
+    struct DonationProduct
+    {
+        juce::String identifier;
+        juce::String purchasePrice;
+    };
+    juce::Array<DonationProduct> mDonationProducts;
+    juce::StringArray mDonationProductIdentifiers{"donation05", "donation10", "donation20", "donation50"};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DonationSelector)
 };
