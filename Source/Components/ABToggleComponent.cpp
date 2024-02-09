@@ -73,7 +73,7 @@ void ABToggleComponent::updateToggleState(const juce::Button& clickedButton)
 {
     // process clicks only if the state of the buttons has really changed
     if (clickedButton.getToggleState() &&
-        clickedButton.getName() != mProcessorABStateManager.getCurrentProcessorState().toString())
+        clickedButton.getName() != mProcessorABStateManager.getCurrentProcessorState())
     {
         mProcessorABStateManager.switchProcessorState();
     }

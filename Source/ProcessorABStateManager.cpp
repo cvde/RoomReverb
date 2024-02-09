@@ -29,9 +29,9 @@ ProcessorABStateManager::ProcessorABStateManager(
     mApplicationState.getOrCreateChildWithName("processorABState", nullptr).setProperty("currentState", "A", nullptr);
 }
 
-const juce::var& ProcessorABStateManager::getCurrentProcessorState() const
+juce::String ProcessorABStateManager::getCurrentProcessorState() const
 {
-    return mApplicationState.getChildWithName("processorABState").getProperty("currentState");
+    return mApplicationState.getChildWithName("processorABState").getProperty("currentState").toString();
 }
 
 void ProcessorABStateManager::switchProcessorState()

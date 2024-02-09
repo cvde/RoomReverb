@@ -26,7 +26,7 @@ class ProcessorABStateManager
 public:
     ProcessorABStateManager(juce::AudioProcessorValueTreeState& parameters, juce::ValueTree& applicationState);
 
-    const juce::var& getCurrentProcessorState() const;
+    juce::String getCurrentProcessorState() const;
     void switchProcessorState();
     void copyActiveToInactiveProcessorState();
 
