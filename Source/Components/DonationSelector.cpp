@@ -62,7 +62,7 @@ void DonationSelector::productsInfoReturned(const juce::Array<juce::InAppPurchas
             if (donationProduct.identifier == products[i].identifier)
             {
                 donationProduct.purchasePrice = products[i].price;
-                getRootMenu()->addItem(donationProduct.purchasePrice, [=]
+                getRootMenu()->addItem(donationProduct.purchasePrice, [this, &donationProduct]
                                        { purchase(donationProduct.identifier); });
                 break;
             }
