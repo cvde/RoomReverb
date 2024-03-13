@@ -32,7 +32,6 @@ UndoComponent::UndoComponent(ReverbAudioProcessor& audioProcessor)
     addAndMakeVisible(mRedoButton);
 
     updateButtonState();
-    changeListenerCallback(mParameters.undoManager);
     mParameters.undoManager->addChangeListener(this);
 }
 
