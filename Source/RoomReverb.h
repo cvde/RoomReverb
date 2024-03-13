@@ -53,27 +53,27 @@ public:
     void setLateWander(float lateWander);
 
 private:
-    float mDryLevel;
-    float mEarlyLevel;
-    float mEarlySendLevel;
-    float mLateLevel;
+    float mDryLevel = 0.0f;
+    float mEarlyLevel = 0.0f;
+    float mEarlySendLevel = 0.0f;
+    float mLateLevel = 0.0f;
 
     std::atomic<bool> mEarlyRoomSizeNeedsUpdate{false};
-    float mEarlyRoomSize;
+    float mEarlyRoomSize = 0.0f;
     std::atomic<bool> mLateRoomSizeNeedsUpdate{false};
-    float mLateRoomSize;
+    float mLateRoomSize = 0.0f;
     std::atomic<bool> mLatePredelayNeedsUpdate{false};
-    float mLatePredelay;
+    float mLatePredelay = 0.0f;
 
     static constexpr int INTERNAL_BUFFER_SIZE = 512;
-    float mLeftBufferIn[INTERNAL_BUFFER_SIZE];
-    float mRightBufferIn[INTERNAL_BUFFER_SIZE];
-    float mLeftEarlyOut[INTERNAL_BUFFER_SIZE];
-    float mRightEarlyOut[INTERNAL_BUFFER_SIZE];
-    float mLeftLateIn[INTERNAL_BUFFER_SIZE];
-    float mRightLateIn[INTERNAL_BUFFER_SIZE];
-    float mLeftLateOut[INTERNAL_BUFFER_SIZE];
-    float mRightLateOut[INTERNAL_BUFFER_SIZE];
+    float mLeftBufferIn[INTERNAL_BUFFER_SIZE] = {};
+    float mRightBufferIn[INTERNAL_BUFFER_SIZE] = {};
+    float mLeftEarlyOut[INTERNAL_BUFFER_SIZE] = {};
+    float mRightEarlyOut[INTERNAL_BUFFER_SIZE] = {};
+    float mLeftLateIn[INTERNAL_BUFFER_SIZE] = {};
+    float mRightLateIn[INTERNAL_BUFFER_SIZE] = {};
+    float mLeftLateOut[INTERNAL_BUFFER_SIZE] = {};
+    float mRightLateOut[INTERNAL_BUFFER_SIZE] = {};
 
     fv3::earlyref_f mEarlyReflections;
     fv3::progenitor2_f mLateReverb;
