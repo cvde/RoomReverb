@@ -18,7 +18,6 @@
  */
 
 #include "HeaderSection.h"
-#include <BinaryData.h>
 
 HeaderSection::HeaderSection(
     ReverbAudioProcessor& audioProcessor,
@@ -48,11 +47,11 @@ void HeaderSection::paint(juce::Graphics& g)
 void HeaderSection::resized()
 {
     auto area = getLocalBounds().reduced(2);
-    const int logoWidth = static_cast<int>(area.getWidth() * 0.34f);
-    const int undoWidth = static_cast<int>(area.getWidth() * 0.12f);
-    const int presetWidth = static_cast<int>(area.getWidth() * 0.3f);
-    const int abToggleWidth = static_cast<int>(area.getWidth() * 0.18f);
-    const int aboutButtonWidth = static_cast<int>(area.getWidth() * 0.06f);
+    const auto logoWidth = static_cast<int>(area.getWidth() * 0.34f);
+    const auto undoWidth = static_cast<int>(area.getWidth() * 0.12f);
+    const auto presetWidth = static_cast<int>(area.getWidth() * 0.3f);
+    const auto abToggleWidth = static_cast<int>(area.getWidth() * 0.18f);
+    const auto aboutButtonWidth = static_cast<int>(area.getWidth() * 0.06f);
 
     mLogo.setBounds(area.removeFromLeft(logoWidth).reduced(5));
     mUndo.setBounds(area.removeFromLeft(undoWidth).reduced(5));

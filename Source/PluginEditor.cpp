@@ -68,9 +68,9 @@ void ReverbAudioProcessorEditor::resized()
     // scale GUI down if the available space is below the minimum size
     if (currentWidth < MIN_WIDTH || currentHeight < MIN_HEIGHT)
     {
-        const float scaleX = static_cast<float>(currentWidth) / MIN_WIDTH;
-        const float scaleY = static_cast<float>(currentHeight) / MIN_HEIGHT;
-        const float scale = juce::jmin(scaleX, scaleY);
+        const auto scaleX = static_cast<float>(currentWidth) / MIN_WIDTH;
+        const auto scaleY = static_cast<float>(currentHeight) / MIN_HEIGHT;
+        const auto scale = juce::jmin(scaleX, scaleY);
         mMainView.setTransform(juce::AffineTransform::scale(scale));
         mMainView.centreWithSize(MIN_WIDTH, MIN_HEIGHT);
     }
