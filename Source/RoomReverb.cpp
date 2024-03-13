@@ -106,7 +106,7 @@ void RoomReverb::process(const float* leftChannelIn,
     // work on fixed size buffer chunks to be independent of the provided buffer size
     for (int offset = 0; offset < numSamples; offset += INTERNAL_BUFFER_SIZE)
     {
-        int numSamplesInBuffer = numSamples - offset < INTERNAL_BUFFER_SIZE ? numSamples - offset : INTERNAL_BUFFER_SIZE;
+        const int numSamplesInBuffer = numSamples - offset < INTERNAL_BUFFER_SIZE ? numSamples - offset : INTERNAL_BUFFER_SIZE;
 
         for (int sample = 0; sample < numSamplesInBuffer; ++sample)
         {
