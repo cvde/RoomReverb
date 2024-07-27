@@ -45,7 +45,7 @@ void Main::resized()
 {
     auto area = getLocalBounds().reduced(2);
 
-    const int aboutDialogHeight = static_cast<int>(area.getHeight() * 0.75f);
+    const int aboutDialogHeight = area.getHeight() * 2 / 3;
     const int aboutDialogWidth = area.getWidth() / 2;
     mAboutDialog.setBounds(area.getCentreX() - aboutDialogWidth / 2, area.getCentreY() - aboutDialogHeight / 2, aboutDialogWidth, aboutDialogHeight);
 

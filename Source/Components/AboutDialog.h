@@ -35,7 +35,6 @@ private:
     std::unique_ptr<juce::Drawable> mLogo;
     juce::Rectangle<float> mLogoBounds;
     juce::Label mPluginInfo;
-    std::unique_ptr<juce::Component> mDonateCTA;
     juce::Label mVersionInfo;
     std::unique_ptr<juce::Drawable> mVstLogo;
     juce::Rectangle<float> mVstLogoBounds;

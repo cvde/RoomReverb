@@ -48,7 +48,6 @@ juce_add_plugin(${PROJECT_NAME}
     REQUIRES_FULL_SCREEN TRUE
     IPHONE_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
     IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
-    NEEDS_STORE_KIT TRUE
     ICON_BIG "Assets/icon_large.png"
 )
 
@@ -105,15 +104,3 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
-
-# add in-app purchase capabilities for iOS
-if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    target_compile_definitions(${PROJECT_NAME}
-        PUBLIC
-            JUCE_IN_APP_PURCHASES=1
-    )
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-            juce::juce_product_unlocking
-    )
-endif()

@@ -19,7 +19,6 @@
 
 #include "AboutDialog.h"
 #include "Config.h"
-#include "DonationSelector.h"
 #include <BinaryData.h>
 
 AboutDialog::AboutDialog()
@@ -31,23 +30,11 @@ AboutDialog::AboutDialog()
     mLogo = juce::Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
 
     const juce::String pluginInfoText = juce::String("Room Reverb is free software distributed under the GNU General Public License version 3. For more information, contact options, and the source code, visit www.ElephantDSP.com\n\n")
-                                        + "If you like this audio plugin, please consider donating a few spare coins. Thank you very much! :)";
+                                        + "If you like this audio plugin, tell your friends about it. Thanks! :)";
     mPluginInfo.setText(pluginInfoText, juce::dontSendNotification);
     mPluginInfo.setFont(juce::Font(22.0f));
     mPluginInfo.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(mPluginInfo);
-
-#if JUCE_IOS
-    mDonateCTA = std::make_unique<DonationSelector>();
-#else
-    mDonateCTA = std::make_unique<juce::HyperlinkButton>();
-    juce::HyperlinkButton* donateButton = static_cast<juce::HyperlinkButton*>(mDonateCTA.get());
-    donateButton->setButtonText("Donate via PayPal");
-    donateButton->setFont(juce::Font(22.0f, juce::Font::underlined), false, juce::Justification::centred);
-    donateButton->setURL(juce::URL("https://www.paypal.com/donate/?hosted_button_id=Z3RSDGUEPVY52"));
-    donateButton->setTooltip("");
-#endif
-    addAndMakeVisible(mDonateCTA.get());
 
     const juce::String versionInfoText = "Version: " + juce::String(PROJECT_VERSION) + " (" + juce::String(PROJECT_BUILD_TYPE) + ")\n" +
                                          "Format: " + juce::String(juce::AudioProcessor::getWrapperTypeDescription(mPluginHostType.getPluginLoadedAs())) + "\n" +
@@ -109,6 +96,5 @@ void AboutDialog::resized()
     mVersionInfo.setBounds(footer.reduced(10));
 
     // content
-    mPluginInfo.setBounds(area.removeFromTop(180));
-    mDonateCTA->setBounds(area.removeFromTop(50).withSizeKeepingCentre(350, 50));
+    mPluginInfo.setBounds(area.removeFromTop(150));
 }
