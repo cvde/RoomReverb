@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22) # JUCE 7.0.7 requires CMake 3.22
+cmake_minimum_required(VERSION 3.22) # JUCE requires CMake 3.22
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(PROJECT_NAME "RoomReverb")
-set(PROJECT_VERSION "1.1.0")
+set(PROJECT_VERSION "1.2.0")
 
 project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 
@@ -84,8 +84,6 @@ target_include_directories(${PROJECT_NAME}
 # adds some preprocessor definitions for JUCE and freeverb
 target_compile_definitions(${PROJECT_NAME}
     PUBLIC
-        JUCE_DISPLAY_SPLASH_SCREEN=0
-        JUCE_REPORT_APP_USAGE=0
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0

@@ -34,7 +34,7 @@ Room Reverb is free software and distributed under the [GNU General Public Licen
 
 Freeverb3 is free software and distributed under the [GNU General Public License Version 2](Freeverb3/COPYING).
 
-JUCE is dual licenced under both the JUCE licence and the GNU General Public License Version 3.
+JUCE is dual licenced under both the commercial [JUCE licence](https://juce.com/legal/juce-8-licence/) and the [GNU Affero General Public License Version 3](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
 <img src="Assets/VST_Compatible_Logo_Steinberg_with_TM_negative.svg" alt="Steinberg VST compatible logo" width="250" height="232"/>
 
