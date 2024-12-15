@@ -25,18 +25,16 @@ After a successful build, the plugin binaries can be found in `build/RoomReverb_
 
 ## References
 - [Freeverb3 signal processing library](https://www.nongnu.org/freeverb3/)
-- [Freeverb3 algorithm references](https://freeverb3vst.osdn.jp/ref.shtml)
-- [Freeverb3VST](https://freeverb3vst.osdn.jp/)
+- [Freeverb3VST](https://freeverb3-vst.sourceforge.io/)
 - [Dragonfly Reverb (also based on Freeverb3)](https://github.com/michaelwillis/dragonfly-reverb)
 
 ## Licenses
 Room Reverb is free software and distributed under the [GNU General Public License Version 3](LICENSE).
 
-Freeverb3 is free software and distributed under the [GNU General Public License Version 2](Freeverb3/COPYING).
+Freeverb3 is free software and distributed under the [GNU General Public License Version 2](Libs/Freeverb3/COPYING) or (at your option) any later version.
 
 JUCE is dual licenced under both the commercial [JUCE licence](https://juce.com/legal/juce-8-licence/) and the [GNU Affero General Public License Version 3](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
 <img src="Assets/VST_Compatible_Logo_Steinberg_with_TM_negative.svg" alt="Steinberg VST compatible logo" width="250" height="232"/>
 
 All other trademarks, registered trademarks and logos or other manufacturers written or shown herein are the property of their respective owners. Use of them does not imply any affiliation with or endorsement by them.
-
