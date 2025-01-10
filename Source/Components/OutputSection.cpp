@@ -56,8 +56,8 @@ void OutputSection::resized()
     const int elementHeight = (area.getHeight() - 5) / 6; // remove 5 pixels from the bottom
 
     auto sectionTitleAndInfo = area.removeFromTop(elementHeight);
-    // for some reason the string width calculation is not reliable... therefore + 10
-    const int sectionTitleTextWidth = mSectionTitle.getFont().getStringWidth(mSectionTitle.getText()) + 10;
+    // add 12 to increase the size a bit
+    const int sectionTitleTextWidth = static_cast<int>(juce::TextLayout::getStringWidth(mSectionTitle.getFont(), mSectionTitle.getText())) + 12;
     mSectionTitle.setBounds(sectionTitleAndInfo.removeFromLeft(sectionTitleTextWidth));
     mSectionInfoButton.setBounds(sectionTitleAndInfo.getX(), sectionTitleAndInfo.getCentreY() - 12, 24, 24);
 

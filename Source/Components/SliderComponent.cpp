@@ -69,8 +69,8 @@ void SliderComponent::resized()
     mParameterIcon->setBounds(parameterIconArea);
 
     auto labelAndInfo = area.removeFromTop(area.getHeight() / 2);
-    // for some reason the string width calculation is not reliable... therefore + 10
-    const int labelTextWidth = mParameterLabel.getFont().getStringWidth(mParameterLabel.getText()) + 10;
+    // add 12 to increase the size a bit
+    const int labelTextWidth = static_cast<int>(juce::TextLayout::getStringWidth(mParameterLabel.getFont(), mParameterLabel.getText())) + 12;
     mParameterLabel.setBounds(labelAndInfo.removeFromLeft(labelTextWidth));
     mParameterInfoButton.setBounds(labelAndInfo.getX(), labelAndInfo.getCentreY() - 12, 24, 24);
 
