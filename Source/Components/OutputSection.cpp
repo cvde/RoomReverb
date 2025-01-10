@@ -34,7 +34,7 @@ OutputSection::OutputSection(ReverbAudioProcessor& audioProcessor, juce::BubbleM
                        "Stereo Width determines the perceived width of the early reflections and late reverberation stereo field. Higher values produce a wider stereo field.")
 {
     mSectionTitle.setText("Output", juce::dontSendNotification);
-    mSectionTitle.setFont(juce::Font(26.0f));
+    mSectionTitle.setFont(juce::FontOptions(26.0f));
     addAndMakeVisible(mSectionTitle);
     addAndMakeVisible(mSectionInfoButton);
     addAndMakeVisible(mDryLevel);

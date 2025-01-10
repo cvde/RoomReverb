@@ -32,7 +32,7 @@ AboutDialog::AboutDialog()
     const juce::String pluginInfoText = juce::String("Room Reverb is free software distributed under the GNU General Public License version 3. For more information, contact options, and the source code, visit www.ElephantDSP.com\n\n")
                                         + "If you like this audio plugin, tell your friends about it. Thanks! :)";
     mPluginInfo.setText(pluginInfoText, juce::dontSendNotification);
-    mPluginInfo.setFont(juce::Font(22.0f));
+    mPluginInfo.setFont(juce::FontOptions(22.0f));
     mPluginInfo.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(mPluginInfo);
 
@@ -41,7 +41,7 @@ AboutDialog::AboutDialog()
                                          "Host: " + juce::String(mPluginHostType.getHostDescription()) + "\n" +
                                          "OS: " + juce::SystemStats::getOperatingSystemName();
     mVersionInfo.setText(versionInfoText, juce::dontSendNotification);
-    mVersionInfo.setFont(juce::Font(18.0f));
+    mVersionInfo.setFont(juce::FontOptions(18.0f));
     mVersionInfo.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(mVersionInfo);
 

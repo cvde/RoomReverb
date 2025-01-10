@@ -38,7 +38,7 @@ LateSection::LateSection(ReverbAudioProcessor& audioProcessor, juce::BubbleMessa
                       "Wander determines the strength of the late reverberation modulation. Higher values make the movement more audible.")
 {
     mSectionTitle.setText("Late Reverb", juce::dontSendNotification);
-    mSectionTitle.setFont(juce::Font(26.0f));
+    mSectionTitle.setFont(juce::FontOptions(26.0f));
     addAndMakeVisible(mSectionTitle);
     addAndMakeVisible(mSectionInfoButton);
     addAndMakeVisible(mLateDamping);

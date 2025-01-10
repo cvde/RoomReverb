@@ -36,7 +36,7 @@ SliderComponent::SliderComponent(
     addAndMakeVisible(mParameterIcon.get());
 
     mParameterLabel.setText(mParameters.getParameter(parameterID)->getName(40), juce::dontSendNotification);
-    mParameterLabel.setFont(juce::Font(20.0f));
+    mParameterLabel.setFont(juce::FontOptions(20.0f));
     addAndMakeVisible(mParameterLabel);
 
     addAndMakeVisible(mParameterInfoButton);

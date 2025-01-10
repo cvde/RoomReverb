@@ -24,14 +24,14 @@ namespace juce
 {
 namespace LookAndFeelHelpers
 {
-    static juce::TextLayout layoutTooltipText (const juce::String& text, juce::Colour colour) noexcept
+    static juce::TextLayout layoutTooltipText (juce::TypefaceMetricsKind metrics, const juce::String& text, juce::Colour colour) noexcept
     {
-        const float tooltipFontSize = 20.0f; // modified
+        const float tooltipFontSize = 20.0f;
         const int maxToolTipWidth = 400;
 
         juce::AttributedString s;
         s.setJustification (juce::Justification::centred);
-        s.append (text, juce::Font (tooltipFontSize, juce::Font::bold), colour);
+        s.append (text, juce::FontOptions (tooltipFontSize, juce::Font::bold).withMetricsKind (metrics), colour);
 
         juce::TextLayout tl;
         tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
@@ -42,8 +42,8 @@ namespace LookAndFeelHelpers
 
 CustomLookAndFeel::CustomLookAndFeel()
 {
-    defaultFont = juce::Typeface::createSystemTypefaceFor(BinaryData::OpenSansCondensedBold_ttf, BinaryData::OpenSansCondensedBold_ttfSize);
-    setDefaultSansSerifTypeface(defaultFont.getTypefacePtr());
+    auto defaultTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::OpenSansCondensedBold_ttf, BinaryData::OpenSansCondensedBold_ttfSize);
+    setDefaultSansSerifTypeface(defaultTypeface);
 
     setColour(juce::ResizableWindow::ColourIds::backgroundColourId, juce::Colour(0xff5e5e5e));
     setColour(juce::DocumentWindow::textColourId, juce::Colours::white);
@@ -77,7 +77,7 @@ juce::Component* CustomLookAndFeel::getParentComponentForMenuOptions (const juce
     if (juce::PluginHostType::getPluginLoadedAs() == juce::AudioProcessor::wrapperType_AudioUnitv3)
     {
         if (options.getParentComponent() == nullptr && options.getTargetComponent() != nullptr)
-            return options.getTargetComponent()->getTopLevelComponent();        
+            return options.getTargetComponent()->getTopLevelComponent();
     }
 #endif
     return LookAndFeel_V2::getParentComponentForMenuOptions (options);
@@ -129,7 +129,7 @@ void CustomLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int w
     g.strokePath(backgroundTrack, { trackWidth, juce::PathStrokeType::curved, juce::PathStrokeType::rounded });
 
     juce::Path valueTrack;
-    juce::Point<float> minPoint, maxPoint, thumbPoint;
+    juce::Point<float> minPoint, maxPoint;
 
     auto kx = sliderPos;
     auto ky = ((float) y + (float) height * 0.5f);
@@ -152,7 +152,7 @@ void CustomLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int w
 juce::Label* CustomLookAndFeel::createSliderTextBox (juce::Slider& slider)
 {
     auto* l = LookAndFeel_V2::createSliderTextBox (slider);
-    l->setFont(juce::Font(20.0f)); // modified
+    l->setFont(juce::FontOptions(20.0f));
 
     if (getCurrentColourScheme() == LookAndFeel_V4::getGreyColourScheme() && (slider.getSliderStyle() == juce::Slider::LinearBar
                                                                                || slider.getSliderStyle() == juce::Slider::LinearBarVertical))
@@ -203,14 +203,14 @@ void CustomLookAndFeel::drawButtonBackground (juce::Graphics& g,
                                            bool shouldDrawButtonAsHighlighted,
                                            bool shouldDrawButtonAsDown)
 {
-    auto cornerSize = 10.0f; // modified
+    auto cornerSize = 10.0f;
     auto bounds = button.getLocalBounds().toFloat().reduced (0.5f, 0.5f);
 
     auto baseColour = backgroundColour.withMultipliedSaturation (button.hasKeyboardFocus (true) ? 1.3f : 0.9f)
                                       .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f);
 
     juce::ignoreUnused(shouldDrawButtonAsHighlighted);
-    if (shouldDrawButtonAsDown) // modified
+    if (shouldDrawButtonAsDown)
         baseColour = baseColour.contrasting (shouldDrawButtonAsDown ? 0.2f : 0.05f);
 
     g.setColour (baseColour);
@@ -246,16 +246,16 @@ void CustomLookAndFeel::drawButtonBackground (juce::Graphics& g,
 }
 
 // change botton font size
-juce::Font CustomLookAndFeel::getTextButtonFont(juce::TextButton&, int buttonHeight)
+juce::Font CustomLookAndFeel::getTextButtonFont (juce::TextButton&, int buttonHeight)
 {
-    return { juce::jmin (20.0f, (float) buttonHeight * 0.6f) };
+    return withDefaultMetrics (juce::FontOptions { juce::jmin (20.0f, (float) buttonHeight * 0.6f) });
 }
 
 // change combobox border to rounded corners
 void CustomLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, bool,
                                    int, int, int, int, juce::ComboBox& box)
 {
-    auto cornerSize = 10.0f; // modified
+    auto cornerSize = 10.0f;
     juce::Rectangle<int> boxBounds (0, 0, width, height);
 
     g.setColour (box.findColour (juce::ComboBox::backgroundColourId));
@@ -275,15 +275,15 @@ void CustomLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, 
 }
 
 // change combobox font size
-juce::Font CustomLookAndFeel::getComboBoxFont(juce::ComboBox& box)
+juce::Font CustomLookAndFeel::getComboBoxFont (juce::ComboBox& box)
 {
-    return { juce::jmin (20.0f, (float) box.getHeight() * 0.85f) };
+    return withDefaultMetrics (juce::FontOptions { juce::jmin (20.0f, (float) box.getHeight() * 0.85f) });
 }
 
 // change font size of unfolded comboboxes
 juce::Font CustomLookAndFeel::getPopupMenuFont()
 {
-    return { 20.0f };
+    return withDefaultMetrics (juce::FontOptions (20.0f));
 }
 
 // change opaque to false to enable rounded corners on unfolded comboboxes
@@ -368,8 +368,8 @@ void CustomLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectan
         if (isHighlighted && isActive)
         {
             g.setColour (findColour (juce::PopupMenu::highlightedBackgroundColourId));
-            auto cornerSize = 10.0f; // modified
-            g.fillRoundedRectangle(r.toFloat(), cornerSize); // modified
+            auto cornerSize = 10.0f;
+            g.fillRoundedRectangle(r.toFloat(), cornerSize);
 
             g.setColour (findColour (juce::PopupMenu::highlightedTextColourId));
         }
@@ -435,10 +435,10 @@ void CustomLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectan
 // change size of tooltips
 juce::Rectangle<int> CustomLookAndFeel::getTooltipBounds (const juce::String& tipText, juce::Point<int> screenPos, juce::Rectangle<int> parentArea)
 {
-    const juce::TextLayout tl (juce::LookAndFeelHelpers::layoutTooltipText (tipText, juce::Colours::black));
+    const juce::TextLayout tl (juce::LookAndFeelHelpers::layoutTooltipText (getDefaultMetricsKind(), tipText, juce::Colours::black));
 
-    auto w = (int) (tl.getWidth() + 28.0f); // modified
-    auto h = (int) (tl.getHeight() + 12.0f); // modified
+    auto w = (int) (tl.getWidth() + 28.0f);
+    auto h = (int) (tl.getHeight() + 12.0f);
 
     return juce::Rectangle<int> (screenPos.x > parentArea.getCentreX() ? screenPos.x - (w + 12) : screenPos.x + 24,
                            screenPos.y > parentArea.getCentreY() ? screenPos.y - (h + 6)  : screenPos.y + 6,
@@ -450,7 +450,7 @@ juce::Rectangle<int> CustomLookAndFeel::getTooltipBounds (const juce::String& ti
 void CustomLookAndFeel::drawTooltip (juce::Graphics& g, const juce::String& text, int width, int height)
 {
     juce::Rectangle<int> bounds (width, height);
-    auto cornerSize = 10.0f; // modified
+    auto cornerSize = 10.0f;
 
     g.setColour (findColour (juce::TooltipWindow::backgroundColourId));
     g.fillRoundedRectangle (bounds.toFloat(), cornerSize);
@@ -458,7 +458,7 @@ void CustomLookAndFeel::drawTooltip (juce::Graphics& g, const juce::String& text
     g.setColour (findColour (juce::TooltipWindow::outlineColourId));
     g.drawRoundedRectangle (bounds.toFloat().reduced (0.5f, 0.5f), cornerSize, 1.0f);
 
-    juce::LookAndFeelHelpers::layoutTooltipText (text, findColour (juce::TooltipWindow::textColourId))
+    juce::LookAndFeelHelpers::layoutTooltipText (getDefaultMetricsKind(), text, findColour (juce::TooltipWindow::textColourId))
                        .draw (g, { static_cast<float> (width), static_cast<float> (height) });
 }
 
@@ -477,8 +477,8 @@ void CustomLookAndFeel::fillTextEditorBackground (juce::Graphics& g, int width, 
 // change texteditor to rounded corners
 void CustomLookAndFeel::drawTextEditorOutline (juce::Graphics& g, int width, int height, juce::TextEditor& textEditor)
 {
-    juce::Rectangle<int> bounds (width, height); // modified
-    auto cornerSize = 10.0f; // modified
+    juce::Rectangle<int> bounds (width, height);
+    auto cornerSize = 10.0f;
 
     if (dynamic_cast<juce::AlertWindow*> (textEditor.getParentComponent()) == nullptr)
     {
@@ -487,7 +487,7 @@ void CustomLookAndFeel::drawTextEditorOutline (juce::Graphics& g, int width, int
             if (textEditor.hasKeyboardFocus (true) && ! textEditor.isReadOnly())
             {
                 g.setColour (textEditor.findColour (juce::TextEditor::focusedOutlineColourId));
-                g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1);  // modified
+                g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1);
             }
             else
             {

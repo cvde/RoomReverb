@@ -25,7 +25,7 @@ InfoButtonComponent::InfoButtonComponent(juce::BubbleMessageComponent& bubbleToo
           mInfoText(intoText)
 {
     mInfoText.setColour(findColour(juce::DocumentWindow::textColourId));
-    mInfoText.setFont(juce::Font(20, juce::Font::bold));
+    mInfoText.setFont(juce::FontOptions(20.0f, juce::Font::bold));
 
     mInfoButton.setImages(juce::Drawable::createFromImageData(BinaryData::info_svg, BinaryData::info_svgSize).get());
     mInfoButton.setTooltip(mInfoText.getText());

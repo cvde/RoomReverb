@@ -28,7 +28,7 @@ EarlySection::EarlySection(ReverbAudioProcessor& audioProcessor, juce::BubbleMes
                          "Room Size determines the size of the virtual room in which the early reflections appear. Higher values give the impression of a larger room.")
 {
     mSectionTitle.setText("Early Reflections", juce::dontSendNotification);
-    mSectionTitle.setFont(juce::Font(26.0f));
+    mSectionTitle.setFont(juce::FontOptions(26.0f));
     addAndMakeVisible(mSectionTitle);
     addAndMakeVisible(mSectionInfoButton);
     addAndMakeVisible(mEarlyDamping);
