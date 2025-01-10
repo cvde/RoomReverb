@@ -27,8 +27,6 @@ class CustomLookAndFeel : public juce::LookAndFeel_V4
 public:
     CustomLookAndFeel();
 
-    juce::Component* getParentComponentForMenuOptions (const juce::PopupMenu::Options&) override;
-
     juce::Slider::SliderLayout getSliderLayout (juce::Slider&) override;
     void drawLinearSlider (juce::Graphics&, int x, int y, int width, int height,
                            float sliderPos, float minSliderPos, float maxSliderPos,

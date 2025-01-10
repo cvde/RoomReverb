@@ -69,20 +69,6 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff5e5e5e));
 }
 
-// draw tooltips and menus directly into the editor window on iOS
-// https://forum.juce.com/t/popupmenu-not-showing-on-auv3-plugin/17763/10
-juce::Component* CustomLookAndFeel::getParentComponentForMenuOptions (const juce::PopupMenu::Options& options)
-{
-#if JUCE_IOS
-    if (juce::PluginHostType::getPluginLoadedAs() == juce::AudioProcessor::wrapperType_AudioUnitv3)
-    {
-        if (options.getParentComponent() == nullptr && options.getTargetComponent() != nullptr)
-            return options.getTargetComponent()->getTopLevelComponent();
-    }
-#endif
-    return LookAndFeel_V2::getParentComponentForMenuOptions (options);
-}
-
 // change size of slider textbox
 juce::Slider::SliderLayout CustomLookAndFeel::getSliderLayout (juce::Slider& slider)
 {
@@ -297,10 +283,6 @@ void CustomLookAndFeel::drawPopupMenuBackground (juce::Graphics& g, int width, i
 {
     juce::Rectangle<int> bounds (width, height);
     auto cornerSize = 10.0f;
-    
-    // no rounded corners for Mac users until https://forum.juce.com/t/bug-popup-menu-background-and-logic-silicon/43243/10 is fixed
-    if ((juce::SystemStats::getOperatingSystemType() & juce::SystemStats::MacOSX) != 0)
-        cornerSize = 0.0f;
 
     g.setColour(findColour(juce::PopupMenu::backgroundColourId));
     g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
