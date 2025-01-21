@@ -69,6 +69,20 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff5e5e5e));
 }
 
+// draw preset combobox menu and tooltips directly into the editor window on iOS
+// https://forum.juce.com/t/popupmenu-not-showing-on-auv3-plugin/17763/10
+juce::Component* CustomLookAndFeel::getParentComponentForMenuOptions (const juce::PopupMenu::Options& options)
+{
+#if JUCE_IOS
+    if (juce::PluginHostType::getPluginLoadedAs() == juce::AudioProcessor::wrapperType_AudioUnitv3)
+    {
+        if (options.getParentComponent() == nullptr && options.getTargetComponent() != nullptr)
+            return options.getTargetComponent()->getTopLevelComponent();
+    }
+#endif
+    return LookAndFeel_V2::getParentComponentForMenuOptions (options);
+}
+
 // change size of slider textbox
 juce::Slider::SliderLayout CustomLookAndFeel::getSliderLayout (juce::Slider& slider)
 {
